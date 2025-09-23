@@ -47,12 +47,18 @@ Características principales:
 ---
 
 ## 📊 Tabla de modelos disponibles
-| Marca       | Modelo        | Año  | Precio estimado (USD) |
-|-------------|---------------|------|-----------------------|
-| Ferrari     | 488 Spider    | 2023 | 740,000               |
-| Lamborghini | Huracán EVO   | 2024 | 880,000               |
-| Porsche     | 911 Turbo S   | 2023 | 682,400               |
-| Mercedes    | AMG GT Black  | 2024 | 500,000               |
+| Marca          | Modelo                  | Año  | Precio estimado (USD) |
+|----------------|-------------------------|------|-----------------------|
+| Volkswagen     | Amarok V6               | 2025 | 65,000                |
+| Audi           | Q7                      | 2025 | 120,000               |
+| Audi           | RS6                     | 2025 | 185,000               |
+| Audi           | S5 Coupé                | 2025 | 95,000                |
+| BMW            | M4                      | 2025 | 170,000               |
+| BMW            | X6                      | 2025 | 140,000               |
+| Ford           | F-150 Raptor            | 2025 | 135,000               |
+| Toyota         | Hilux GR Sport          | 2025 | 75,000                |
+| Mercedes-Benz  | A45 AMG                 | 2025 | 80,000                |
+| Mercedes-Benz  | Clase C AMG             | 2025 | 95,000                |
 
 ---
 
