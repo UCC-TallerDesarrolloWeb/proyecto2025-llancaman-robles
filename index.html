@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aurum | Autos de Alta Gama</title>
+    <meta name="author" content="Franco Robles y Santiago Llancamán" />
+    <meta
+      name="description"
+      content="Aurum: concesionaria y catálogo de autos de alta gama. Compra venta de sedanes, SUVs y coupés premium. Atención personalizada."
+    />
+    <meta
+      name="keywords"
+      content="Aurum, autos de lujo, alta gama, concesionaria, sedanes, SUV, coupé, Argentina"
+    />
+    <link rel="icon" type="image/png" href="imagenes/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img
+            src="imagenes/logo.png"
+            alt="Logo de Aurum"
+            class="brand__logo"
+          />
+          <h1 class="brand__title" id="top">Aurum Motors</h1>
+        </div>
+        <nav class="main-nav" aria-label="Navegación principal">
+          <a class="is-primary" href="index.html">Inicio</a>
+          <a href="productos.html">Catálogo</a>
+          <a href="productos.html#autos">Autos</a>
+          <a href="productos.html#camionetas">Camionetas</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container section">
+        <section class="slider" aria-label="Galería de modelos destacados">
+          <div class="slider__track">
+            <figure class="slider__slide is-active">
+              <img
+                src="imagenes/corvette1.jpeg"
+                alt="Coupé deportiva color negro dorado"
+              />
+              <figcaption class="slider__caption">
+                <h2>Corvette</h2>
+                <p>Performance y diseño para amantes de la velocidad.</p>
+              </figcaption>
+            </figure>
+            <figure class="slider__slide" aria-hidden="true">
+              <img
+                src="imagenes/corvette2.jpg"
+                alt="SUV premium color negro dorado"
+              />
+              <figcaption class="slider__caption">
+                <h2>SUV Premium</h2>
+                <p>Espacio, confort y tecnología sin compromisos.</p>
+              </figcaption>
+            </figure>
+            <figure class="slider__slide" aria-hidden="true">
+              <img
+                src="imagenes/auto3.svg"
+                alt="Sedán ejecutivo color negro dorado"
+              />
+              <figcaption class="slider__caption">
+                <h2>Sedán Ejecutivo</h2>
+                <p>Elegancia y sobriedad para tu día a día.</p>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="slider__controls" aria-hidden="false">
+            <button
+              id="prevSlide"
+              class="ctrl"
+              type="button"
+              aria-label="Anterior"
+            >
+              &#10094;
+            </button>
+            <button
+              id="nextSlide"
+              class="ctrl"
+              type="button"
+              aria-label="Siguiente"
+            >
+              &#10095;
+            </button>
+          </div>
+          <div
+            class="slider__dots"
+            role="tablist"
+            aria-label="Seleccionar imagen"
+          >
+            <button
+              class="slider__dot is-active"
+              type="button"
+              aria-label="Ir a la imagen 1"
+            ></button>
+            <button
+              class="slider__dot"
+              type="button"
+              aria-label="Ir a la imagen 2"
+            ></button>
+            <button
+              class="slider__dot"
+              type="button"
+              aria-label="Ir a la imagen 3"
+            ></button>
+          </div>
+        </section>
+      </div>
+
+      <div class="container section">
+        <section class="card" id="quienes-somos">
+          <h3>¿Quiénes somos?</h3>
+          <p class="lead">
+            En <strong>Aurum</strong> nos especializamos en la venta de autos de
+            alta gama, combinando exclusividad, diseño y potencia. Creemos que
+            cada vehículo es más que un medio de transporte: es una experiencia
+            de lujo. Ofrecemos atención personalizada y un servicio confiable
+            para acompañar a nuestros clientes en cada paso. Trabajamos con las
+            marcas más prestigiosas del mundo automotor. Nuestra misión es que
+            vivas la pasión por la excelencia en cada kilómetro.
+          </p>
+        </section>
+      </div>
+
+      <div class="container section">
+        <section class="card" aria-labelledby="calc-title">
+          <h3 id="calc-title">Calculadora de financiación</h3>
+          <div class="form-grid">
+            <div class="form-control">
+              <label for="precio">Precio del vehículo (USD)</label>
+              <input
+                id="precio"
+                name="precio"
+                type="number"
+                placeholder="Ej: 45000"
+                size="12"
+                maxlength="8"
+                inputmode="numeric"
+              />
+            </div>
+            <div class="form-control">
+              <label for="anticipo">Anticipo (USD)</label>
+              <input
+                id="anticipo"
+                name="anticipo"
+                type="number"
+                placeholder="Ej: 10000"
+                size="12"
+                maxlength="8"
+                inputmode="numeric"
+              />
+            </div>
+            <div class="form-control">
+              <label for="tasa">Tasa nominal anual (%)</label>
+              <input
+                id="tasa"
+                name="tasa"
+                type="number"
+                placeholder="Ej: 48"
+                size="6"
+                maxlength="5"
+                inputmode="decimal"
+              />
+            </div>
+            <div class="form-control">
+              <label for="meses">Meses</label>
+              <select id="meses" name="meses">
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+              </select>
+            </div>
+          </div>
+          <p id="resultado" aria-live="polite"></p>
+          <button class="btn" type="button" onclick="calcularCuota()">
+            Calcular cuota
+          </button>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container grid">
+        <div>
+          <strong>Aurum</strong><br />
+          <small>Alta gama · Argentina</small>
+        </div>
+        <div style="text-align: right">
+          <small
+            ><a href="#top">Volver arriba</a> ·
+            <a href="productos.html">Catálogo</a></small
+          ><br />
+          <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
+        </div>
+      </div>
+    </footer>
+
+    <script src="scripts.js" defer></script>
+  </body>
+</html>
