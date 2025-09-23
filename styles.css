@@ -304,6 +304,15 @@ footer small {
   color: var(--muted);
 }
 
+/* Filtros Laterales */
+
+.filters {
+  position: sticky;
+  top: 96px;
+  height: fit-content;
+  overflow: visible;
+}
+
 .filters input,
 .filters select,
 .filters .form-control,
