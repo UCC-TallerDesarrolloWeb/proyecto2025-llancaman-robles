@@ -35,9 +35,21 @@
         </div>
         <nav class="main-nav" aria-label="Navegación principal">
           <a class="is-primary" href="index.html">Inicio</a>
-          <a href="productos.html">Catálogo</a>
+          <a href="catalogo.html">Catálogo</a>
           <a href="productos.html#autos">Autos</a>
           <a href="productos.html#camionetas">Camionetas</a>
+          <!-- Botón Carrito -->
+          <button
+            id="open-cart"
+            class="cart-button"
+            type="button"
+            aria-label="Abrir carrito"
+            aria-haspopup="dialog"
+            aria-controls="cart-drawer"
+          >
+            <span class="cart-icon" aria-hidden="true">🛒</span>
+            <span id="cart-count" class="cart-count" aria-live="polite">0</span>
+          </button>
         </nav>
       </div>
     </header>
@@ -209,5 +221,27 @@
     </footer>
 
     <script src="scripts.js" defer></script>
+
+    <!-- Drawer de Carrito -->
+<div id="cart-backdrop" class="cart-backdrop" hidden></div>
+<aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true"
+       aria-labelledby="cart-title" aria-describedby="cart-summary" hidden>
+  <header class="cart-header">
+    <h2 id="cart-title">Tu carrito</h2>
+    <button id="close-cart" class="cart-close" type="button" aria-label="Cerrar carrito">✕</button>
+  </header>
+  <div id="cart-items" class="cart-items" aria-live="polite"></div>
+  <div id="cart-summary" class="cart-summary">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <strong id="cart-total">USD 0.00</strong>
+    </div>
+    <div class="cart-actions">
+      <button id="cart-clear" class="btn" type="button">Vaciar</button>
+      <button class="btn" type="button" disabled>Finalizar compra</button>
+    </div>
+  </div>
+</aside>
+
   </body>
 </html>
