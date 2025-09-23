@@ -223,25 +223,38 @@
     <script src="scripts.js" defer></script>
 
     <!-- Drawer de Carrito -->
-<div id="cart-backdrop" class="cart-backdrop" hidden></div>
-<aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true"
-       aria-labelledby="cart-title" aria-describedby="cart-summary" hidden>
-  <header class="cart-header">
-    <h2 id="cart-title">Tu carrito</h2>
-    <button id="close-cart" class="cart-close" type="button" aria-label="Cerrar carrito">✕</button>
-  </header>
-  <div id="cart-items" class="cart-items" aria-live="polite"></div>
-  <div id="cart-summary" class="cart-summary">
-    <div class="cart-total-row">
-      <span>Total</span>
-      <strong id="cart-total">USD 0.00</strong>
-    </div>
-    <div class="cart-actions">
-      <button id="cart-clear" class="btn" type="button">Vaciar</button>
-      <button class="btn" type="button" disabled>Finalizar compra</button>
-    </div>
-  </div>
-</aside>
-
+    <div id="cart-backdrop" class="cart-backdrop" hidden></div>
+    <aside
+      id="cart-drawer"
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cart-title"
+      aria-describedby="cart-summary"
+      hidden
+    >
+      <header class="cart-header">
+        <h2 id="cart-title">Tu carrito</h2>
+        <button
+          id="close-cart"
+          class="cart-close"
+          type="button"
+          aria-label="Cerrar carrito"
+        >
+          ✕
+        </button>
+      </header>
+      <div id="cart-items" class="cart-items" aria-live="polite"></div>
+      <div id="cart-summary" class="cart-summary">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <strong id="cart-total">USD 0.00</strong>
+        </div>
+        <div class="cart-actions">
+          <button id="cart-clear" class="btn" type="button">Vaciar</button>
+          <button class="btn" type="button" disabled>Finalizar compra</button>
+        </div>
+      </div>
+    </aside>
   </body>
 </html>
