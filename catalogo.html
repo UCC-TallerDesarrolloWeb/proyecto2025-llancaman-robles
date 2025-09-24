@@ -27,8 +27,16 @@
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">
-          <a href="index.html" class="brand__logo-link" aria-label="Ir a inicio">
-            <img src="imagenes/logo.png" alt="Logo de Aurum" class="brand__logo" />
+          <a
+            href="index.html"
+            class="brand__logo-link"
+            aria-label="Ir a inicio"
+          >
+            <img
+              src="imagenes/logo.png"
+              alt="Logo de Aurum"
+              class="brand__logo"
+            />
           </a>
           <h1 class="brand__title">Aurum Motors</h1>
         </div>
@@ -77,20 +85,40 @@
           <fieldset class="card">
             <legend>Tipo</legend>
             <div class="stack">
-              <label><input type="checkbox" name="tipo" value="auto" /> Auto</label>
-              <label><input type="checkbox" name="tipo" value="camioneta" /> Camioneta</label>
+              <label
+                ><input type="checkbox" name="tipo" value="auto" /> Auto</label
+              >
+              <label
+                ><input type="checkbox" name="tipo" value="camioneta" />
+                Camioneta</label
+              >
             </div>
           </fieldset>
 
           <fieldset class="card">
             <legend>Marca</legend>
             <div class="stack">
-              <label><input type="checkbox" name="marca" value="audi" /> Audi</label>
-              <label><input type="checkbox" name="marca" value="bmw" /> BMW</label>
-              <label><input type="checkbox" name="marca" value="mercedes" /> Mercedes-Benz</label>
-              <label><input type="checkbox" name="marca" value="toyota" /> Toyota</label>
-              <label><input type="checkbox" name="marca" value="ford" /> Ford</label>
-              <label><input type="checkbox" name="marca" value="volkswagen" /> Volkswagen</label>
+              <label
+                ><input type="checkbox" name="marca" value="audi" /> Audi</label
+              >
+              <label
+                ><input type="checkbox" name="marca" value="bmw" /> BMW</label
+              >
+              <label
+                ><input type="checkbox" name="marca" value="mercedes-benz" />
+                Mercedes-Benz</label
+              >
+              <label
+                ><input type="checkbox" name="marca" value="toyota" />
+                Toyota</label
+              >
+              <label
+                ><input type="checkbox" name="marca" value="ford" /> Ford</label
+              >
+              <label
+                ><input type="checkbox" name="marca" value="volkswagen" />
+                Volkswagen</label
+              >
             </div>
           </fieldset>
 
@@ -99,11 +127,25 @@
             <div class="stack two">
               <div class="form-control">
                 <label for="anio-min">Mín</label>
-                <input id="anio-min" type="number" placeholder="2018" size="6" maxlength="4" inputmode="numeric" />
+                <input
+                  id="anio-min"
+                  type="number"
+                  placeholder="2018"
+                  size="6"
+                  maxlength="4"
+                  inputmode="numeric"
+                />
               </div>
               <div class="form-control">
                 <label for="anio-max">Máx</label>
-                <input id="anio-max" type="number" placeholder="2025" size="6" maxlength="4" inputmode="numeric" />
+                <input
+                  id="anio-max"
+                  type="number"
+                  placeholder="2025"
+                  size="6"
+                  maxlength="4"
+                  inputmode="numeric"
+                />
               </div>
             </div>
           </fieldset>
@@ -113,17 +155,33 @@
             <div class="stack two">
               <div class="form-control">
                 <label for="precio-min">Mín</label>
-                <input id="precio-min" type="number" placeholder="50000" size="10" maxlength="7" inputmode="numeric" />
+                <input
+                  id="precio-min"
+                  type="number"
+                  placeholder="50000"
+                  size="10"
+                  maxlength="7"
+                  inputmode="numeric"
+                />
               </div>
               <div class="form-control">
                 <label for="precio-max">Máx</label>
-                <input id="precio-max" type="number" placeholder="70000" size="10" maxlength="7" inputmode="numeric" />
+                <input
+                  id="precio-max"
+                  type="number"
+                  placeholder="70000"
+                  size="10"
+                  maxlength="7"
+                  inputmode="numeric"
+                />
               </div>
             </div>
           </fieldset>
 
           <div class="stack">
-            <button id="btn-limpiar" class="btn" type="button">Limpiar Filtros</button>
+            <button id="btn-limpiar" class="btn" type="button">
+              Limpiar Filtros
+            </button>
           </div>
         </form>
       </aside>
@@ -131,102 +189,247 @@
       <!-- Grilla de productos -->
       <section class="catalog-grid" aria-live="polite">
         <!-- Autos -->
-        <article class="product-card" data-tipo="auto" data-marca="audi" data-anio="2022" data-precio="58000" id="audi-a6">
+        <article
+          class="product-card"
+          data-tipo="camioneta"
+          data-marca="volkswagen"
+          data-anio="2025"
+          data-precio="completar"
+          id="amarok-v6"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto3.svg" alt="Audi A6 sedán gris 2022" />
+            <img src="imagenes/AMAROK V61.webp" alt="Amarok V6 2025" loading="lazy"/>
           </figure>
           <div class="product-body">
-            <h3 class="product-title">Audi A6</h3>
-            <p class="product-meta">Sedán · 2022 · Automático</p>
-            <strong class="product-price">USD 58.000</strong>
-            <button class="btn view-more" type="button" data-id="audi-a6">Ver más / Elegir auto</button>
+            <h3 class="product-title">Amarok V6</h3>
+            <p class="product-meta">4x4 · 2025 · Automático</p>
+            <strong class="product-price">Completar</strong>
+            <button class="btn view-more" type="button" data-id="amarok-v6">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
 
-        <article class="product-card" data-tipo="auto" data-marca="bmw" data-anio="2023" data-precio="62000" id="bmw-serie5">
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="audi"
+          data-anio="2025"
+          data-precio="completar"
+          id="audi-q7"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto3.svg" alt="BMW Serie 5 sedán negro 2023" />
+            <img src="imagenes/AUDI Q71.avif" alt="Audi Q7 Sedán Azul 2025" />
           </figure>
           <div class="product-body">
-            <h3 class="product-title">BMW Serie 5</h3>
-            <p class="product-meta">Sedán · 2023 · Automático</p>
-            <strong class="product-price">USD 62.000</strong>
-            <button class="btn view-more" type="button" data-id="bmw-serie5">Ver más / Elegir auto</button>
+            <h3 class="product-title">Audi Q7</h3>
+            <p class="product-meta">SUV · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="audi-q7">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
 
-        <article class="product-card" data-tipo="auto" data-marca="mercedes" data-anio="2021" data-precio="65000" id="mb-clasee">
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="audi"
+          data-anio="2025"
+          data-precio="completar"
+          id="audi-rs6"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto3.svg" alt="Mercedes-Benz Clase E sedán 2021" />
+            <img src="imagenes/AUDI RS61.avif" alt="Audi RS6 sedán 2025" />
           </figure>
           <div class="product-body">
-            <h3 class="product-title">Mercedes-Benz Clase E</h3>
-            <p class="product-meta">Sedán · 2021 · Automático</p>
-            <strong class="product-price">USD 65.000</strong>
-            <button class="btn view-more" type="button" data-id="mb-clasee">Ver más / Elegir auto</button>
+            <h3 class="product-title">Audi RS6</h3>
+            <p class="product-meta">Sedán · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="audi-rs6">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
 
         <!-- Camionetas -->
-        <article class="product-card" data-tipo="camioneta" data-marca="toyota" data-anio="2022" data-precio="52000" id="toyota-hilux">
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="audi"
+          data-anio="2025"
+          data-precio="completar"
+          id="audi-s5-coupe"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto2.svg" alt="Toyota Hilux GR Sport 2022" />
+            <img src="imagenes/AUDI S5 COUPE.webp" alt="Audi S5 Coupe 2025" />
           </figure>
           <div class="product-body">
-            <h3 class="product-title">Toyota Hilux GR Sport</h3>
-            <p class="product-meta">4x4 · 2022 · Automática</p>
-            <strong class="product-price">USD 52.000</strong>
-            <button class="btn view-more" type="button" data-id="toyota-hilux">Ver más / Elegir auto</button>
+            <h3 class="product-title">Audi S5 Coupe</h3>
+            <p class="product-meta">Sedán · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="audi-s5-coupe">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
 
-        <article class="product-card" data-tipo="camioneta" data-marca="ford" data-anio="2023" data-precio="57000" id="ford-raptor">
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="bmw"
+          data-anio="2025"
+          data-precio="completar"
+          id="bmw-m4"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto2.svg" alt="Ford Ranger Raptor 2023" />
+            <img src="imagenes/BMW M4.jpg" alt="BMW M4 2025" />
           </figure>
           <div class="product-body">
-            <h3 class="product-title">Ford Ranger Raptor</h3>
-            <p class="product-meta">4x4 · 2023 · Automática</p>
-            <strong class="product-price">USD 57.000</strong>
-            <button class="btn view-more" type="button" data-id="ford-raptor">Ver más / Elegir auto</button>
+            <h3 class="product-title">BMW M4</h3>
+            <p class="product-meta">Sedán · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="bmw-m4">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
 
-        <article class="product-card" data-tipo="camioneta" data-marca="volkswagen" data-anio="2021" data-precio="55000" id="vw-amarok">
+        <article
+          class="product-card"
+          data-tipo="camioneta"
+          data-marca="bmw"
+          data-anio="2025"
+          data-precio="completar"
+          id="bmw-x6"
+        >
           <figure class="product-media">
-            <img src="imagenes/auto2.svg" alt="Volkswagen Amarok V6 2021" />
+            <img src="imagenes/BMW X61.jpg" alt="BMW X6 2025" />
           </figure>
           <div class="product-body">
-            <h3 class="product-title">Volkswagen Amarok V6</h3>
-            <p class="product-meta">4x4 · 2021 · Automática</p>
-            <strong class="product-price">USD 55.000</strong>
-            <button class="btn view-more" type="button" data-id="vw-amarok">Ver más / Elegir auto</button>
+            <h3 class="product-title">BMW X6</h3>
+            <p class="product-meta">SUV · 2025 · Automática</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="bmw-x6">
+              Ver más / Elegir auto
+            </button>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-tipo="camioneta"
+          data-marca="ford"
+          data-anio="2025"
+          data-precio="completar"
+          id="ford-f150-raptor"
+        >
+          <figure class="product-media">
+            <img src="imagenes/F150 RAPTOR.jpeg" alt="Ford F150 Raptor 2025" />
+          </figure>
+          <div class="product-body">
+            <h3 class="product-title">Ford F150 Raptor</h3>
+            <p class="product-meta">4x4 · 2025 · Automática</p>
+            <strong class="product-price">completar</strong>
+            <button
+              class="btn view-more"
+              type="button"
+              data-id="ford-f150-raptor"
+            >
+              Ver más / Elegir auto
+            </button>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-tipo="camioneta"
+          data-marca="toyota"
+          data-anio="2025"
+          data-precio="completar"
+          id="hilux-gr"
+        >
+          <figure class="product-media">
+            <img src="imagenes/HILUX GR1.jpg" alt="Toyota Hilux Gr 2025" />
+          </figure>
+          <div class="product-body">
+            <h3 class="product-title">Toyota Hilux GR</h3>
+            <p class="product-meta">4x4 · 2025 · Automática</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="hilux-gr">
+              Ver más / Elegir auto
+            </button>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="mercedes-benz"
+          data-anio="2025"
+          data-precio="completar"
+          id="mb-a45"
+        >
+          <figure class="product-media">
+            <img src="imagenes/MB A45.jpg" alt="Mercedes Benz A45 2025" />
+          </figure>
+          <div class="product-body">
+            <h3 class="product-title">Mercedes Benz A45</h3>
+            <p class="product-meta">Sedán · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="mb-a45">
+              Ver más / Elegir auto
+            </button>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-tipo="auto"
+          data-marca="mercedes-benz"
+          data-anio="2025"
+          data-precio="completar"
+          id="mb-camg"
+        >
+          <figure class="product-media">
+            <img
+              src="imagenes/MB CLASE C AMG2.jpeg"
+              alt="Mercedes Benz Clase C AMG 2025"
+            />
+          </figure>
+          <div class="product-body">
+            <h3 class="product-title">Mercedes Benz Clase C AMG</h3>
+            <p class="product-meta">Sedán · 2025 · Automático</p>
+            <strong class="product-price">completar</strong>
+            <button class="btn view-more" type="button" data-id="mb-camg">
+              Ver más / Elegir auto
+            </button>
           </div>
         </article>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container grid">
-        <div>
-          <strong>Aurum</strong><br />
-          <small>Alta gama · Argentina</small>
-        </div>
-        <div style="text-align: right">
-          <small><a href="index.html">Inicio</a> · <a href="catalogo.html">Catálogo</a></small><br />
-          <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
-        </div>
-      </div>
-    </footer>
-
-    <script src="scripts.js" defer></script>
-
     <!-- Drawer de Carrito (general) -->
     <div id="cart-backdrop" class="cart-backdrop" hidden></div>
-    <aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-describedby="cart-summary" hidden>
+    <aside
+      id="cart-drawer"
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cart-title"
+      aria-describedby="cart-summary"
+      hidden
+    >
       <header class="cart-header">
         <h2 id="cart-title">Tu carrito</h2>
-        <button id="close-cart" class="cart-close" type="button" aria-label="Cerrar carrito">✕</button>
+        <button
+          id="close-cart"
+          class="cart-close"
+          type="button"
+          aria-label="Cerrar carrito"
+        >
+          ✕
+        </button>
       </header>
       <div id="cart-items" class="cart-items" aria-live="polite"></div>
       <div id="cart-summary" class="cart-summary">
@@ -243,20 +446,49 @@
 
     <!-- Modal vehículo -->
     <div id="vehicle-backdrop" class="modal-backdrop" hidden></div>
-    <section id="vehicle-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="veh-title" hidden>
+    <section
+      id="vehicle-modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="veh-title"
+      hidden
+    >
       <button id="veh-close" class="modal-close" aria-label="Cerrar">✕</button>
       <div class="modal-body">
         <figure class="modal-media"><img id="veh-img" alt="" /></figure>
         <div class="modal-content">
           <h3 id="veh-title"></h3>
           <p id="veh-meta" class="meta"></p>
-          <p id="veh-desc" class="muted">Este modelo acepta personalización y agregados opcionales.</p>
+          <p id="veh-desc" class="muted">
+            Este modelo acepta personalización y agregados opcionales.
+          </p>
           <strong id="veh-price" class="price"></strong>
           <div class="modal-actions">
-            <button id="veh-choose" class="btn is-primary" type="button">Elegir este auto</button>
+            <button id="veh-choose" class="btn is-primary" type="button">
+              Elegir este auto
+            </button>
           </div>
         </div>
       </div>
     </section>
   </body>
+
+  <footer class="site-footer">
+    <div class="container grid">
+      <div>
+        <strong>Aurum</strong><br />
+        <small>Alta gama · Argentina</small>
+      </div>
+      <div style="text-align: right">
+        <small
+          ><a href="index.html">Inicio</a> ·
+          <a href="catalogo.html">Catálogo</a></small
+        ><br />
+        <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts.js" defer></script>
 </html>

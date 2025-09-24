@@ -9,7 +9,9 @@
   --accent: #2a2e37;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 html,
@@ -107,82 +109,149 @@ nav.main-nav {
   color: var(--gold);
 }
 
-/* Hero / Slider (index) */
+/* =========================================================
+   Slider – variables rápidas
+   ========================================================= */
+.slider {
+  --radius: 18px;
+  --ctrl-size: clamp(36px, 5.2vw, 46px);
+  --ctrl-inset: clamp(18px, 2.4vw, 28px); /* mete un poco más las flechas */
+  --ratio: 16/7.6; /* MÁS ALTO para que no corte tanto */
+}
+
+/* =========================================================
+   Caja
+   ========================================================= */
 .slider {
   position: relative;
-  border-radius: 18px;
+  width: min(1200px, 94vw);
+  margin-inline: auto;
+  border-radius: var(--radius);
   overflow: hidden;
   background: #0b0c10;
-  aspect-ratio: 16/9;
-  max-height: 80vh;
+  aspect-ratio: var(--ratio);
+  max-height: clamp(380px, 64vh, 720px);
 }
+
+/* (Opcional) Sin marco negro alrededor */
+/* .slider.slider--edge { background: transparent; border-radius: 0; overflow: clip; } */
+
+/* =========================================================
+   Slides
+   ========================================================= */
 .slider__track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 100%;
+  height: 100%;
 }
+
+/* 🔧 QUITA márgenes del figure que te agregaba el “borde” interno */
 .slider__slide {
   position: relative;
-  display: none;
   height: 100%;
+  display: none;
+  margin: 0; /* <- clave */
 }
 .slider__slide.is-active {
   display: block;
 }
+
 .slider__slide > img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
-  object-position: center 50%;
+  object-position: var(--pos, center 50%);
 }
-.slider__caption {
+
+/* Gradiente inferior para legibilidad del caption */
+.slider__slide::after {
+  content: "";
   position: absolute;
-  inset: auto 0 28px 0;
+  inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.65) 75%
+    rgba(0, 0, 0, 0) 55%,
+    rgba(0, 0, 0, 0.55) 92%
   );
-  padding: 28px;
-  color: #eaeaea;
   z-index: 2;
+  pointer-events: none;
+}
+
+/* =========================================================
+   Caption
+   ========================================================= */
+.slider__caption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(12px, 3vw, 28px);
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: min(60ch, 68%);
+  color: #eaeaea;
+  z-index: 4;
+  padding: clamp(10px, 2.2vw, 18px) clamp(12px, 2.6vw, 22px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 .slider__caption h2 {
   margin: 0 0 6px 0;
-  font-size: clamp(18px, 2.6vw, 28px);
+  font-size: clamp(18px, 2.2vw, 28px);
 }
 .slider__caption p {
   margin: 0;
-  color: var(--muted);
+  color: #cfcfcf;
 }
+
+/* =========================================================
+   Controles
+   ========================================================= */
 .slider__controls {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding-inline: var(--ctrl-inset); /* las mete dentro del cuadro */
+  z-index: 5;
+  pointer-events: none;
 }
 .ctrl {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid #2b2d33;
-  border-radius: 12px;
-  padding: 10px;
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: var(--ctrl-size);
+  height: var(--ctrl-size);
+  border-radius: 999px;
+  background: rgba(20, 20, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: #f2f2f2;
   cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 .ctrl:hover,
-.ctrl:focus {
-  background: rgba(0, 0, 0, 0.55);
+.ctrl:focus-visible {
+  background: rgba(35, 35, 42, 0.65);
+  transform: scale(1.05);
+  outline: none;
 }
+
+/* =========================================================
+   Dots
+   ========================================================= */
 .slider__dots {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 8px;
+  bottom: 10px;
   display: flex;
   justify-content: center;
   gap: 8px;
-  z-index: 3;
+  z-index: 5;
 }
 .slider__dot {
   width: 10px;
@@ -191,11 +260,40 @@ nav.main-nav {
   background: #3a3d46;
   border: 1px solid #585b66;
   cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.slider__dot:hover,
+.slider__dot:focus-visible {
+  transform: scale(1.15);
+  outline: none;
 }
 .slider__dot.is-active {
-  background: var(--gold);
-  border-color: var(--gold);
+  background: var(--gold, #d1a954);
+  border-color: var(--gold, #d1a954);
 }
+
+/* =========================================================
+   Responsivo
+   ========================================================= */
+@media (max-width: 520px) {
+  .slider {
+    --ratio: 16/9;
+    max-height: 70vh;
+  }
+  .slider__caption {
+    max-width: 88%;
+  }
+}
+@media (min-width: 1280px) {
+  /* aún más alto en pantallas grandes */
+  .slider {
+    --ratio: 16/7.2;
+    max-height: clamp(420px, 68vh, 780px);
+  }
+}
+/* =========================================================
+   Fin Slider
+   ========================================================= */
 
 /* Sección: Quiénes somos (index) */
 .section {
@@ -317,7 +415,7 @@ footer small {
 .filters select,
 .filters .form-control,
 .filters .range-input,
-.filters .filter-group{
+.filters .filter-group {
   position: sticky;
   top: 96px;
   height: fit-content;
@@ -327,7 +425,7 @@ footer small {
 
 .filters .dropdown,
 .filters .accordion,
-.filters .filter-group{
+.filters .filter-group {
   position: static;
 }
 
@@ -344,24 +442,34 @@ footer small {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
+/* Tarjeta */
 .product-card {
   background: var(--card);
   border: 1px solid #1f2229;
   border-radius: 16px;
-  overflow: hidden;
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow);
+  gap: 16px;
+  padding: 16px;
 }
+
+/* Marco de imagen: recorta y centra */
 .product-media {
   aspect-ratio: 16 / 9;
-  background: #0b0c10;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #111;
 }
+
+/* La imagen rellena el marco sin deformarse */
 .product-media img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: center;
+  max-width: none;
 }
 .product-body {
   padding: 16px;
@@ -539,7 +647,10 @@ footer small {
   z-index: 80;
 }
 
-.modal-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .modal {
   position: fixed;
@@ -551,17 +662,22 @@ footer small {
   transform: translateY(20px);
   opacity: 0;
   pointer-events: none;
-  transition: transform .2s ease, opacity .2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
   z-index: 90;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
 }
-.modal.is-open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.modal.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .modal-close {
   position: absolute;
-  top: 10px; right: 10px;
+  top: 10px;
+  right: 10px;
   border: 1px solid #2b2d33;
   background: #171a21;
   color: #f1f1f1;
@@ -578,18 +694,33 @@ footer small {
   overflow: auto;
 }
 .modal-media {
-  background:#0b0c10;
+  background: #0b0c10;
   border-radius: 12px;
   overflow: hidden;
 }
 .modal-media img {
-  width:100%; height:100%; object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.modal-content { display: grid; gap: 10px; }
-.modal-content .meta { color: var(--muted); }
-.modal-content .price { color: var(--gold); font-size: 1.2rem; }
-.modal-actions { margin-top: 6px; }
-.btn.is-primary { border-color: var(--gold); color: var(--gold); }
+.modal-content {
+  display: grid;
+  gap: 10px;
+}
+.modal-content .meta {
+  color: var(--muted);
+}
+.modal-content .price {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+.modal-actions {
+  margin-top: 6px;
+}
+.btn.is-primary {
+  border-color: var(--gold);
+  color: var(--gold);
+}
 
 /* ==== Página de Personalización ==== */
 .personalize-layout {
@@ -599,7 +730,7 @@ footer small {
   align-items: start;
 }
 .personalize-layout .catalog-grid {
-  grid-template-columns: repeat(2, minmax(0,1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .cart-panel {
   position: sticky;
@@ -608,7 +739,10 @@ footer small {
   display: flex;
   flex-direction: column;
 }
-.cart-panel .cart-items { flex: 1; overflow: auto; }
+.cart-panel .cart-items {
+  flex: 1;
+  overflow: auto;
+}
 
 /* Responsive */
 @media (max-width: 992px) {
@@ -636,6 +770,10 @@ footer small {
 }
 
 @media (max-width: 980px) {
-  .modal-body { grid-template-columns: 1fr; }
-  .personalize-layout { grid-template-columns: 1fr; }
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+  .personalize-layout {
+    grid-template-columns: 1fr;
+  }
 }

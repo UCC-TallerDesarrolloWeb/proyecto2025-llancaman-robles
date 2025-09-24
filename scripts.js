@@ -50,6 +50,8 @@ window.addEventListener("DOMContentLoaded", () => {
   );
 });
 
+
+
 // ==== Calculadora de financiación (index) ====
 function calcularCuota() {
   const precio = parseFloat(document.getElementById("precio")?.value) || 0;
@@ -529,3 +531,31 @@ window.addEventListener("DOMContentLoaded", () => {
       );
     });
 })();
+
+(function () {
+    const track = document.querySelector('.slider__track');
+    const slides = Array.from(track.querySelectorAll('.slider__slide'));
+    const prev = document.getElementById('prevSlide');
+    const next = document.getElementById('nextSlide');
+    const dots = Array.from(document.querySelectorAll('.slider__dot'));
+
+    let index = slides.findIndex(s => s.classList.contains('is-active'));
+    const go = (i) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, k) => {
+        s.classList.toggle('is-active', k === index);
+        s.setAttribute('aria-hidden', k === index ? 'false' : 'true');
+      });
+      dots.forEach((d, k) => d.classList.toggle('is-active', k === index));
+    };
+
+    prev.addEventListener('click', () => go(index - 1));
+    next.addEventListener('click', () => go(index + 1));
+    dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+
+    // Accesibilidad con teclado: ← → para navegar
+    document.querySelector('.slider').addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { go(index - 1); }
+      if (e.key === 'ArrowRight') { go(index + 1); }
+    });
+  })();
