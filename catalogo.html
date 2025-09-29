@@ -20,6 +20,31 @@
       href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var t = params.get("tipo"); // 'auto' | 'camioneta' | null
+
+        // fallback por hash antiguo
+        if (!t) {
+          var h = (location.hash || "").toLowerCase();
+          if (h === "#autos") t = "auto";
+          if (h === "#camionetas") t = "camioneta";
+        }
+
+        // 1) setear data-view antes del primer paint
+        var v = t ? t : "catalogo";
+        document.documentElement.setAttribute("data-view", v);
+
+        // 2) ocultar el fieldset "Tipo" si v=auto|camioneta (evita flash)
+        if (t) {
+          var st = document.createElement("style");
+          st.textContent = "#filtro-tipo{display:none !important}";
+          document.head.appendChild(st);
+        }
+      })();
+    </script>
+
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -42,9 +67,9 @@
         </div>
         <nav class="main-nav" aria-label="Navegación principal">
           <a href="index.html">Inicio</a>
-          <a class="is-primary" href="catalogo.html">Catálogo</a>
-          <a href="#autos">Autos</a>
-          <a href="#camionetas">Camionetas</a>
+          <a href="catalogo.html">Catálogo</a>
+          <a href="catalogo.html?tipo=auto">Autos</a>
+          <a href="catalogo.html?tipo=camioneta">Camionetas</a>
 
           <!-- Botón Carrito (drawer general del sitio) -->
           <button
@@ -82,7 +107,7 @@
       <!-- Filtros laterales -->
       <aside class="filters" aria-label="Filtros de catálogo">
         <form id="form-filtros">
-          <fieldset class="card">
+          <fieldset id="filtro-tipo" class="card">
             <legend>Tipo</legend>
             <div class="stack">
               <label
@@ -194,16 +219,20 @@
           data-tipo="camioneta"
           data-marca="volkswagen"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="65000"
           id="amarok-v6"
         >
           <figure class="product-media">
-            <img src="imagenes/AMAROK V61.webp" alt="Amarok V6 2025" loading="lazy"/>
+            <img
+              src="imagenes/AMAROK V61.webp"
+              alt="Amarok V6 2025"
+              loading="lazy"
+            />
           </figure>
           <div class="product-body">
             <h3 class="product-title">Amarok V6</h3>
             <p class="product-meta">4x4 · 2025 · Automático</p>
-            <strong class="product-price">Completar</strong>
+            <strong class="product-price">$65.000</strong>
             <button class="btn view-more" type="button" data-id="amarok-v6">
               Ver más / Elegir auto
             </button>
@@ -215,7 +244,7 @@
           data-tipo="auto"
           data-marca="audi"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="120000"
           id="audi-q7"
         >
           <figure class="product-media">
@@ -224,7 +253,7 @@
           <div class="product-body">
             <h3 class="product-title">Audi Q7</h3>
             <p class="product-meta">SUV · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$120.000</strong>
             <button class="btn view-more" type="button" data-id="audi-q7">
               Ver más / Elegir auto
             </button>
@@ -236,7 +265,7 @@
           data-tipo="auto"
           data-marca="audi"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="185000"
           id="audi-rs6"
         >
           <figure class="product-media">
@@ -245,7 +274,7 @@
           <div class="product-body">
             <h3 class="product-title">Audi RS6</h3>
             <p class="product-meta">Sedán · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$185.000</strong>
             <button class="btn view-more" type="button" data-id="audi-rs6">
               Ver más / Elegir auto
             </button>
@@ -258,7 +287,7 @@
           data-tipo="auto"
           data-marca="audi"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="95000"
           id="audi-s5-coupe"
         >
           <figure class="product-media">
@@ -267,7 +296,7 @@
           <div class="product-body">
             <h3 class="product-title">Audi S5 Coupe</h3>
             <p class="product-meta">Sedán · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$95.000</strong>
             <button class="btn view-more" type="button" data-id="audi-s5-coupe">
               Ver más / Elegir auto
             </button>
@@ -279,7 +308,7 @@
           data-tipo="auto"
           data-marca="bmw"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="170000"
           id="bmw-m4"
         >
           <figure class="product-media">
@@ -288,7 +317,7 @@
           <div class="product-body">
             <h3 class="product-title">BMW M4</h3>
             <p class="product-meta">Sedán · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$170.000</strong>
             <button class="btn view-more" type="button" data-id="bmw-m4">
               Ver más / Elegir auto
             </button>
@@ -300,7 +329,7 @@
           data-tipo="camioneta"
           data-marca="bmw"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="140000"
           id="bmw-x6"
         >
           <figure class="product-media">
@@ -309,7 +338,7 @@
           <div class="product-body">
             <h3 class="product-title">BMW X6</h3>
             <p class="product-meta">SUV · 2025 · Automática</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$140.000</strong>
             <button class="btn view-more" type="button" data-id="bmw-x6">
               Ver más / Elegir auto
             </button>
@@ -321,7 +350,7 @@
           data-tipo="camioneta"
           data-marca="ford"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="135000"
           id="ford-f150-raptor"
         >
           <figure class="product-media">
@@ -330,7 +359,7 @@
           <div class="product-body">
             <h3 class="product-title">Ford F150 Raptor</h3>
             <p class="product-meta">4x4 · 2025 · Automática</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$135.000</strong>
             <button
               class="btn view-more"
               type="button"
@@ -346,7 +375,7 @@
           data-tipo="camioneta"
           data-marca="toyota"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="75000"
           id="hilux-gr"
         >
           <figure class="product-media">
@@ -355,7 +384,7 @@
           <div class="product-body">
             <h3 class="product-title">Toyota Hilux GR</h3>
             <p class="product-meta">4x4 · 2025 · Automática</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$75.000</strong>
             <button class="btn view-more" type="button" data-id="hilux-gr">
               Ver más / Elegir auto
             </button>
@@ -367,7 +396,7 @@
           data-tipo="auto"
           data-marca="mercedes-benz"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="80000"
           id="mb-a45"
         >
           <figure class="product-media">
@@ -376,7 +405,7 @@
           <div class="product-body">
             <h3 class="product-title">Mercedes Benz A45</h3>
             <p class="product-meta">Sedán · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$80.000</strong>
             <button class="btn view-more" type="button" data-id="mb-a45">
               Ver más / Elegir auto
             </button>
@@ -388,7 +417,7 @@
           data-tipo="auto"
           data-marca="mercedes-benz"
           data-anio="2025"
-          data-precio="completar"
+          data-precio="95000"
           id="mb-camg"
         >
           <figure class="product-media">
@@ -400,7 +429,7 @@
           <div class="product-body">
             <h3 class="product-title">Mercedes Benz Clase C AMG</h3>
             <p class="product-meta">Sedán · 2025 · Automático</p>
-            <strong class="product-price">completar</strong>
+            <strong class="product-price">$95.000</strong>
             <button class="btn view-more" type="button" data-id="mb-camg">
               Ver más / Elegir auto
             </button>
@@ -472,23 +501,21 @@
         </div>
       </div>
     </section>
+    <footer class="site-footer">
+      <div class="container grid">
+        <div>
+          <strong>Aurum</strong><br />
+          <small>Alta gama · Argentina</small>
+        </div>
+        <div class="footer-right">
+          <small
+            ><a href="index.html">Inicio</a> ·
+            <a href="catalogo.html">Catálogo</a></small
+          ><br />
+          <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
+        </div>
+      </div>
+    </footer>
+    <script src="scripts.js" defer></script>
   </body>
-
-  <footer class="site-footer">
-    <div class="container grid">
-      <div>
-        <strong>Aurum</strong><br />
-        <small>Alta gama · Argentina</small>
-      </div>
-      <div style="text-align: right">
-        <small
-          ><a href="index.html">Inicio</a> ·
-          <a href="catalogo.html">Catálogo</a></small
-        ><br />
-        <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
-      </div>
-    </div>
-  </footer>
-
-  <script src="scripts.js" defer></script>
 </html>

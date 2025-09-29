@@ -36,8 +36,8 @@
         <nav class="main-nav" aria-label="Navegación principal">
           <a class="is-primary" href="index.html">Inicio</a>
           <a href="catalogo.html">Catálogo</a>
-          <a href="productos.html#autos">Autos</a>
-          <a href="productos.html#camionetas">Camionetas</a>
+          <a href="catalogo.html?tipo=auto">Autos</a>
+          <a href="catalogo.html?tipo=camioneta">Camionetas</a>
           <!-- Botón Carrito -->
           <button
             id="open-cart"
@@ -59,11 +59,7 @@
         <section class="slider" aria-label="Galería de modelos destacados">
           <div class="slider__track">
             <figure class="slider__slide is-active">
-              <img
-                src="imagenes/AUDI RS61.avif"
-                alt="AUDI RS6 negro"
-                style="--pos: center 50%"
-              />
+              <img src="imagenes/AUDI RS61.avif" alt="AUDI RS6 negro" />
               <figcaption class="slider__caption">
                 <h2>Audi RS6</h2>
                 <p>Performance y diseño para amantes de la velocidad.</p>
@@ -74,7 +70,6 @@
               <img
                 src="imagenes/F150 RAPTOR.jpeg"
                 alt="Ford F-150 Raptor negra"
-                style="--pos: center 60%"
               />
               <figcaption class="slider__caption">
                 <h2>Ford F150 Raptor</h2>
@@ -86,7 +81,6 @@
               <img
                 src="imagenes/MB CLASE C AMG2.jpeg"
                 alt="Mercedes Benz Clase C AMG gris"
-                style="--pos: center 90%"
               />
               <figcaption class="slider__caption">
                 <h2>Mercedes Benz Clase C AMG</h2>
@@ -116,13 +110,14 @@
 
           <div
             class="slider__dots"
-            role="tablist"
-            aria-label="Seleccionar imagen"
+            role="group"
+            aria-label="Paginación del carrusel"
           >
             <button
               class="slider__dot is-active"
               type="button"
               aria-label="Ir a la imagen 1"
+              aria-current="true"
             ></button>
             <button
               class="slider__dot"
@@ -204,7 +199,7 @@
             </div>
           </div>
           <p id="resultado" aria-live="polite"></p>
-          <button class="btn" type="button" onclick="calcularCuota()">
+          <button id="calc-btn" class="btn" type="button">
             Calcular cuota
           </button>
         </section>
@@ -217,10 +212,10 @@
           <strong>Aurum</strong><br />
           <small>Alta gama · Argentina</small>
         </div>
-        <div style="text-align: right">
+        <div class="footer-right">
           <small
             ><a href="#top">Volver arriba</a> ·
-            <a href="productos.html">Catálogo</a></small
+            <a href="catalogo.html">Catálogo</a></small
           ><br />
           <small>&copy; 2025 Aurum. Todos los derechos reservados.</small>
         </div>

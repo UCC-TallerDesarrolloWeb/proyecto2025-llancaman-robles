@@ -1,33 +1,76 @@
 // ==== Carrusel simple (index) ====
+/**
+ * Índice del slide activo del carrusel simple.
+ * @type {number}
+ */
 let current = 0;
+
+/** @type {NodeListOf<HTMLElement>} */
 const slides = document.querySelectorAll(".slider__slide");
+/** @type {NodeListOf<HTMLButtonElement>} */
 const dots = document.querySelectorAll(".slider__dot");
+/** @type {HTMLButtonElement|null} */
 const prevBtn = document.getElementById("prevSlide");
+/** @type {HTMLButtonElement|null} */
 const nextBtn = document.getElementById("nextSlide");
+
+/**
+ * Id del setInterval que avanza el carrusel automáticamente.
+ * @type {number|undefined}
+ */
 let timer;
 
-function showSlide(idx) {
+/**
+ * Muestra un slide por índice y actualiza estado ARIA y “dots”.
+ * @function showSlide
+ * @param {number} idx - Índice (puede ser negativo o mayor; se normaliza en módulo).
+ */
+const showSlide = (idx) => {
   if (!slides.length) return;
   current = (idx + slides.length) % slides.length;
   slides.forEach((s, i) => {
     s.setAttribute("aria-hidden", i !== current ? "true" : "false");
     s.classList.toggle("is-active", i === current);
   });
-  dots.forEach((d, i) => d.classList.toggle("is-active", i === current));
-}
-function next() {
+  dots.forEach((d, i) => {
+    const active = i === current;
+    d.classList.toggle("is-active", active);
+    d.setAttribute("aria-current", active ? "true" : "false");
+  });
+};
+
+/**
+ * Avanza al siguiente slide.
+ * @function next
+ */
+const next = () => {
   showSlide(current + 1);
-}
-function prev() {
+};
+
+/**
+ * Retrocede al slide anterior.
+ * @function prev
+ */
+const prev = () => {
   showSlide(current - 1);
-}
-function startAuto() {
+};
+
+/**
+ * Inicia el auto-avance del carrusel.
+ * @function startAuto
+ */
+const startAuto = () => {
   stopAuto();
   timer = setInterval(next, 5000);
-}
-function stopAuto() {
+};
+
+/**
+ * Detiene el auto-avance del carrusel.
+ * @function stopAuto
+ */
+const stopAuto = () => {
   if (timer) clearInterval(timer);
-}
+};
 
 window.addEventListener("DOMContentLoaded", () => {
   showSlide(0);
@@ -50,37 +93,142 @@ window.addEventListener("DOMContentLoaded", () => {
   );
 });
 
+// ---------------------------
+// Helpers y Calculadora
+// ---------------------------
 
+/**
+ * Muestra un mensaje en un alert del navegador.
+ * @function alertar
+ * @param {string} msg - Mensaje a mostrar.
+ */
+const alertar = (msg) => {
+  alert(msg);
+};
 
-// ==== Calculadora de financiación (index) ====
-function calcularCuota() {
-  const precio = parseFloat(document.getElementById("precio")?.value) || 0;
-  const anticipo = parseFloat(document.getElementById("anticipo")?.value) || 0;
-  const tasa = parseFloat(document.getElementById("tasa")?.value) || 0;
-  const meses = parseInt(document.getElementById("meses")?.value) || 0;
+/**
+ * Limpia el valor de un input y le da el foco.
+ * @function limpiarYFocus
+ * @param {HTMLInputElement|HTMLSelectElement} input - Campo a limpiar y enfocar.
+ */
+const limpiarYFocus = (input) => {
+  input.value = "";
+  input.focus();
+};
+
+/**
+ * Valida los campos de la calculadora de financiación.
+ * @function validarCalculadora
+ * @returns {false | {precio:number, anticipo:number, tasa:number, meses:number}}
+ *  Objeto con valores válidos o `false` si hay algún error (y ya se alertó).
+ */
+const validarCalculadora = () => {
+  const precioEl = document.getElementById("precio");
+  const anticipoEl = document.getElementById("anticipo");
+  const tasaEl = document.getElementById("tasa");
+  const mesesEl = document.getElementById("meses");
+
+  const precio = Number(precioEl.value);
+  if (!precio || precio <= 0) {
+    alertar("Ingresá un precio válido mayor a 0.");
+    limpiarYFocus(precioEl);
+    return false;
+  }
+
+  const anticipo = Number(anticipoEl.value || 0);
+  if (anticipo < 0) {
+    alertar("El anticipo no puede ser negativo.");
+    limpiarYFocus(anticipoEl);
+    return false;
+  }
+  if (anticipo > precio) {
+    alertar("El anticipo no puede superar el precio del vehículo.");
+    limpiarYFocus(anticipoEl);
+    return false;
+  }
+
+  const tasa = Number(tasaEl.value || 0);
+  if (tasa < 0 || tasa > 200) {
+    alertar("Ingresá una tasa entre 0% y 200%.");
+    limpiarYFocus(tasaEl);
+    return false;
+  }
+
+  const meses = Number(mesesEl.value);
+  if (![12, 24, 36, 48].includes(meses)) {
+    alertar("Seleccioná la cantidad de meses.");
+    mesesEl.focus();
+    return false;
+  }
+
+  return { precio, anticipo, tasa, meses };
+};
+
+/**
+ * Calcula y muestra la cuota mensual estimada según los valores ingresados.
+ * Usa el sistema francés cuando la tasa es > 0; si es 0, reparte en partes iguales.
+ * @function calcularCuota
+ */
+const calcularCuota = () => {
+  const vals = validarCalculadora();
+  const out = document.getElementById("resultado");
+
+  if (!vals) {
+    if (out) out.textContent = "";
+    return;
+  }
+
+  const { precio, anticipo, tasa, meses } = vals;
   const monto = Math.max(precio - anticipo, 0);
   const i = tasa / 100 / 12;
+
   let cuota = 0;
-  if (i > 0 && meses > 0) {
+  if (i > 0) {
     cuota =
       (monto * (i * Math.pow(1 + i, meses))) / (Math.pow(1 + i, meses) - 1);
-  } else if (meses > 0) {
+  } else {
     cuota = monto / meses;
   }
-  const out = document.getElementById("resultado");
-  if (out) {
-    out.textContent = isFinite(cuota)
-      ? `Cuota estimada: USD ${cuota.toFixed(2)} / mes`
-      : `Revisá los valores ingresados`;
-  }
-}
 
-// === Catálogo: filtros + búsqueda + add-to-cart ===
-(function () {
+  if (out) out.textContent = `Cuota estimada: USD ${cuota.toFixed(2)} / mes`;
+};
+
+// -------------------------------------------
+// Catálogo: filtros + búsqueda + add-to-cart
+// -------------------------------------------
+
+/**
+ * Módulo de catálogo (filtros, búsqueda, y “agregar al carrito”).
+ * Se auto-ejecuta al cargar si existe `.catalog-grid`.
+ * @module Catalogo
+ */
+(() => {
+  /** @type {HTMLElement|null} */
   const grid = document.querySelector(".catalog-grid");
   if (!grid) return;
 
-  const q = document.getElementById("q");
+  // ----- Prefiltro por URL -----
+  const params = new URLSearchParams(location.search);
+  /** @type {"auto"|"camioneta"|null} */
+  let forcedTipo = params.get("tipo"); // 'auto' | 'camioneta' | null
+
+  // (Fallback: si alguna vez llegan con #autos o #camionetas)
+  if (!forcedTipo) {
+    const h = (location.hash || "").replace("#", "").toLowerCase();
+    if (h === "autos") forcedTipo = "auto";
+    if (h === "camionetas") forcedTipo = "camioneta";
+  }
+
+  // Ocultar fieldset "Tipo" si hay prefiltro
+  const tipoInputs = document.querySelectorAll('input[name="tipo"]');
+  const tipoFieldset = tipoInputs[0]?.closest("fieldset");
+  if (forcedTipo && tipoFieldset) {
+    tipoFieldset.hidden = true; // lo saca de la UI
+    tipoInputs.forEach((i) => (i.checked = false)); // evitamos estados mezclados
+  }
+
+  // Controles de UI
+  /** @type {HTMLInputElement|null} */ const q = document.getElementById("q");
   const btnBuscar = document.getElementById("btn-buscar");
   const btnAplicar = document.getElementById("btn-aplicar");
   const btnLimpiar = document.getElementById("btn-limpiar");
@@ -90,16 +238,28 @@ function calcularCuota() {
   const precioMin = document.getElementById("precio-min");
   const precioMax = document.getElementById("precio-max");
 
-  function getChecks(name) {
-    return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(
+  /**
+   * Devuelve valores chequeados de un grupo de checkboxes por name.
+   * @param {string} name
+   * @returns {string[]}
+   */
+  const getChecks = (name) =>
+    [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(
       (i) => i.value
     );
-  }
 
-  function pasaFiltros(card) {
+  /**
+   * Evalúa si una card pasa los filtros actuales.
+   * @param {HTMLElement} card
+   * @returns {boolean}
+   */
+  const pasaFiltros = (card) => {
     const texto = (q?.value || "").toLowerCase();
-    const tipos = getChecks("tipo");
+
+    // Si hay prefiltro -> ignoro checkboxes "Tipo" y fuerzo ese valor
+    const tipos = forcedTipo ? [forcedTipo] : getChecks("tipo");
     const marcas = getChecks("marca");
+
     const anio = Number(card.dataset.anio || 0);
     const precio = Number(card.dataset.precio || 0);
     const title =
@@ -118,9 +278,13 @@ function calcularCuota() {
       (!precioMax?.value || precio <= Number(precioMax.value));
 
     return buscaOk && tipoOk && marcaOk && anioOk && precioOk;
-  }
+  };
 
-  function aplicar() {
+  /**
+   * Aplica todos los filtros y actualiza visibilidad de cards.
+   * @function aplicar
+   */
+  const aplicar = () => {
     const cards = [...grid.querySelectorAll(".product-card")];
     let visibles = 0;
     cards.forEach((c) => {
@@ -129,13 +293,17 @@ function calcularCuota() {
       if (ok) visibles++;
     });
     grid.setAttribute("data-visibles", String(visibles));
-  }
+  };
 
-  function limpiar() {
+  /**
+   * Reinicia el formulario de filtros y re-aplica.
+   * @function limpiar
+   */
+  const limpiar = () => {
     document.getElementById("form-filtros")?.reset();
     if (q) q.value = "";
     aplicar();
-  }
+  };
 
   ["change", "keyup"].forEach((evt) =>
     grid.closest("main").addEventListener(evt, (e) => {
@@ -172,32 +340,86 @@ function calcularCuota() {
   });
 })();
 
-// === Estado de carrito compartido ===
+// ---------------------------
+// Carrito compartido (estado + render)
+// ---------------------------
+
+/**
+ * @typedef {Object} CartItem
+ * @property {string} id - Identificador de producto.
+ * @property {string} title - Título/Descripción.
+ * @property {number} price - Precio unitario en USD.
+ * @property {number} qty - Cantidad.
+ * @property {"vehículo"|"accesorio"|string} [type] - Tipo (opcional).
+ */
+
+/** Clave de almacenamiento del carrito. */
 const CART_KEY = "aurum_cart";
+/** Clave del vehículo elegido. */
 const SELECTED_KEY = "aurum_selected_vehicle";
+
+/**
+ * Obtiene el carrito desde localStorage.
+ * @function getCart
+ * @returns {CartItem[]}
+ */
 const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+
+/**
+ * Guarda el carrito en localStorage.
+ * @function setCart
+ * @param {CartItem[]} arr - Items a persistir.
+ */
 const setCart = (arr) => localStorage.setItem(CART_KEY, JSON.stringify(arr));
+
+/**
+ * Persistir vehículo seleccionado.
+ * @function setSelectedVehicle
+ * @param {CartItem} obj - Vehículo elegido (qty=1).
+ */
 const setSelectedVehicle = (obj) =>
   localStorage.setItem(SELECTED_KEY, JSON.stringify(obj));
+
+/**
+ * Obtiene el vehículo seleccionado.
+ * @function getSelectedVehicle
+ * @returns {CartItem|null}
+ */
 const getSelectedVehicle = () =>
   JSON.parse(localStorage.getItem(SELECTED_KEY) || "null");
 
-function cartTotal(arr) {
+/**
+ * Calcula el total en USD del carrito.
+ * @function cartTotal
+ * @param {CartItem[]} arr - Items del carrito.
+ * @returns {number} Total acumulado.
+ */
+const cartTotal = (arr) => {
   return arr.reduce(
     (acc, it) => acc + (Number(it.price) || 0) * (Number(it.qty) || 0),
     0
   );
-}
-function updateCartCount() {
+};
+
+/**
+ * Actualiza el badge de cantidad de unidades del carrito.
+ * @function updateCartCount
+ */
+const updateCartCount = () => {
   const el = document.getElementById("cart-count");
   if (!el) return;
   const cart = getCart();
   const units = cart.reduce((acc, it) => acc + (Number(it.qty) || 0), 0);
   el.textContent = String(units);
-}
+};
 
-// Render genérico a cualquier contenedor de items/total
-function renderCartInto(itemsId, totalId) {
+/**
+ * Renderiza items y total del carrito en contenedores específicos.
+ * @function renderCartInto
+ * @param {string} itemsId - Id del contenedor de items.
+ * @param {string} totalId - Id del elemento donde se muestra el total.
+ */
+const renderCartInto = (itemsId, totalId) => {
   const cont = document.getElementById(itemsId);
   const totalEl = document.getElementById(totalId);
   if (!cont || !totalEl) return;
@@ -234,20 +456,32 @@ function renderCartInto(itemsId, totalId) {
   });
 
   totalEl.textContent = `USD ${cartTotal(cart).toFixed(2)}`;
-}
+};
 
-function renderCart() {
-  // Drawer
-  renderCartInto("cart-items", "cart-total");
-  // Panel fijo (personalización)
-  renderCartInto("cart-panel-items", "cart-panel-total");
-}
+/**
+ * Renderiza el carrito tanto en el drawer como en el panel lateral (si existen).
+ * @function renderCart
+ */
+const renderCart = () => {
+  renderCartInto("cart-items", "cart-total"); // Drawer
+  renderCartInto("cart-panel-items", "cart-panel-total"); // Panel fijo
+};
 
-function isCartOpen() {
+/**
+ * Indica si el drawer del carrito está abierto.
+ * @function isCartOpen
+ * @returns {boolean}
+ */
+const isCartOpen = () => {
   const drawer = document.getElementById("cart-drawer");
   return drawer && drawer.classList.contains("is-open");
-}
-function openCart() {
+};
+
+/**
+ * Abre el drawer del carrito, mostrando backdrop y renderizando items.
+ * @function openCart
+ */
+const openCart = () => {
   const drawer = document.getElementById("cart-drawer");
   const backdrop = document.getElementById("cart-backdrop");
   if (!drawer || !backdrop) return;
@@ -258,8 +492,13 @@ function openCart() {
     backdrop.classList.add("is-open");
   });
   renderCart();
-}
-function closeCart() {
+};
+
+/**
+ * Cierra el drawer del carrito y oculta el backdrop.
+ * @function closeCart
+ */
+const closeCart = () => {
   const drawer = document.getElementById("cart-drawer");
   const backdrop = document.getElementById("cart-backdrop");
   if (!drawer || !backdrop) return;
@@ -269,9 +508,13 @@ function closeCart() {
     drawer.hidden = true;
     backdrop.hidden = true;
   }, 200);
-}
+};
 
-function attachCartEvents() {
+/**
+ * Ata los eventos principales del carrito (abrir/cerrar, modificar cantidades, vaciar).
+ * @function attachCartEvents
+ */
+const attachCartEvents = () => {
   const openBtn = document.getElementById("open-cart");
   const closeBtn = document.getElementById("close-cart");
   const backdrop = document.getElementById("cart-backdrop");
@@ -288,7 +531,12 @@ function attachCartEvents() {
     if (e.key === "Escape" && isCartOpen()) closeCart();
   });
 
-  function onClickItems(e) {
+  /**
+   * Delegado de clicks en los contenedores de items del carrito.
+   * Incrementa, decrementa o remueve ítems.
+   * @param {MouseEvent} e
+   */
+  const onClickItems = (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
     const act = btn.dataset.act;
@@ -313,7 +561,7 @@ function attachCartEvents() {
     setCart(cart);
     updateCartCount();
     renderCart();
-  }
+  };
 
   items && items.addEventListener("click", onClickItems);
   itemsPanel && itemsPanel.addEventListener("click", onClickItems);
@@ -324,20 +572,61 @@ function attachCartEvents() {
       updateCartCount();
       renderCart();
     });
-}
+};
 
 // Inicialización común
 window.addEventListener("DOMContentLoaded", () => {
+  const calcBtn = document.getElementById("calc-btn");
+  if (calcBtn) calcBtn.addEventListener("click", calcularCuota);
   updateCartCount();
   attachCartEvents();
   renderCart();
 });
 
-// === Filtros + búsqueda en catálogo (tu base) ===
-(function () {
+// ---------------------------
+// Catálogo: búsqueda + filtros + prefiltro por URL (módulo reducido)
+// ---------------------------
+
+/**
+ * Módulo reducido de catálogo (marca activo en el nav y aplica filtros).
+ * @module CatalogoURL
+ */
+(() => {
   const grid = document.querySelector(".catalog-grid");
   if (!grid) return;
 
+  // --- Prefiltro por URL: auto | camioneta ---
+  const params = new URLSearchParams(location.search);
+  /** @type {"auto"|"camioneta"|null} */
+  let forcedTipo = params.get("tipo");
+
+  // fallback por hash antiguo
+  if (!forcedTipo) {
+    const h = (location.hash || "").replace("#", "").toLowerCase();
+    if (h === "autos") forcedTipo = "auto";
+    if (h === "camionetas") forcedTipo = "camioneta";
+  }
+
+  // Ocultar "Tipo" en la UI si hay prefiltro (refuerzo al CSS del <head>)
+  const tipoFieldset = document.getElementById("filtro-tipo");
+  if (forcedTipo && tipoFieldset) tipoFieldset.hidden = true;
+
+  // Marcar activo en el nav
+  const nav = document.querySelector(".main-nav");
+  if (nav) {
+    nav.querySelectorAll("a").forEach((a) => a.classList.remove("is-primary"));
+    if (forcedTipo) {
+      nav
+        .querySelector(`a[href*="tipo=${forcedTipo}"]`)
+        ?.classList.add("is-primary");
+    } else {
+      nav
+        .querySelector(`a[href$="catalogo.html"]`)
+        ?.classList.add("is-primary");
+    }
+  }
+
+  // --- Controles UI ---
   const q = document.getElementById("q");
   const btnBuscar = document.getElementById("btn-buscar");
   const btnLimpiar = document.getElementById("btn-limpiar");
@@ -347,15 +636,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const precioMin = document.getElementById("precio-min");
   const precioMax = document.getElementById("precio-max");
 
-  function getChecks(name) {
-    return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(
+  const getChecks = (name) =>
+    [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(
       (i) => i.value
     );
-  }
 
-  function pasaFiltros(card) {
+  const pasaFiltros = (card) => {
     const texto = (q?.value || "").toLowerCase();
-    const tipos = getChecks("tipo");
+    const tipos = forcedTipo ? [forcedTipo] : getChecks("tipo");
     const marcas = getChecks("marca");
     const anio = Number(card.dataset.anio || 0);
     const precio = Number(card.dataset.precio || 0);
@@ -363,7 +651,6 @@ window.addEventListener("DOMContentLoaded", () => {
       card.querySelector(".product-title")?.textContent.toLowerCase() || "";
     const meta =
       card.querySelector(".product-meta")?.textContent.toLowerCase() || "";
-
     const buscaOk = !texto || title.includes(texto) || meta.includes(texto);
     const tipoOk = !tipos.length || tipos.includes(card.dataset.tipo);
     const marcaOk = !marcas.length || marcas.includes(card.dataset.marca);
@@ -373,11 +660,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const precioOk =
       (!precioMin?.value || precio >= Number(precioMin.value)) &&
       (!precioMax?.value || precio <= Number(precioMax.value));
-
     return buscaOk && tipoOk && marcaOk && anioOk && precioOk;
-  }
+  };
 
-  function aplicar() {
+  const aplicar = () => {
     const cards = [...grid.querySelectorAll(".product-card")];
     let visibles = 0;
     cards.forEach((c) => {
@@ -386,13 +672,14 @@ window.addEventListener("DOMContentLoaded", () => {
       if (ok) visibles++;
     });
     grid.setAttribute("data-visibles", String(visibles));
-  }
+  };
 
-  function limpiar() {
+  const limpiar = () => {
     document.getElementById("form-filtros")?.reset();
     if (q) q.value = "";
+    // mantener forcedTipo activo al limpiar
     aplicar();
-  }
+  };
 
   ["change", "keyup"].forEach((evt) =>
     grid.closest("main").addEventListener(evt, (e) => {
@@ -402,11 +689,19 @@ window.addEventListener("DOMContentLoaded", () => {
   btnBuscar && btnBuscar.addEventListener("click", aplicar);
   btnLimpiar && btnLimpiar.addEventListener("click", limpiar);
 
+  // Primera pasada ya con el prefiltro aplicado
   aplicar();
 })();
 
-// === Modal "Ver más / Elegir auto" en catálogo ===
-(function () {
+// ---------------------------
+// Modal “Ver más / Elegir auto”
+// ---------------------------
+
+/**
+ * Módulo del modal de vehículo (abre/cierra y pasa datos de la card).
+ * @module ModalVehiculo
+ */
+(() => {
   const grid = document.querySelector(".catalog-grid");
   const modal = document.getElementById("vehicle-modal");
   const backdrop = document.getElementById("vehicle-backdrop");
@@ -420,25 +715,34 @@ window.addEventListener("DOMContentLoaded", () => {
   const metaEl = document.getElementById("veh-meta");
   const priceEl = document.getElementById("veh-price");
 
-  let currentId = null;
-  let currentVehicle = null;
+  /** @type {string|null} */ let currentId = null;
+  /** @type {CartItem|null} */ let currentVehicle = null;
 
-  function openModal() {
+  /**
+   * Abre el modal de vehículo.
+   * @function openModal
+   */
+  const openModal = () => {
     modal.hidden = false;
     backdrop.hidden = false;
     requestAnimationFrame(() => {
       modal.classList.add("is-open");
       backdrop.classList.add("is-open");
     });
-  }
-  function closeModal() {
+  };
+
+  /**
+   * Cierra el modal de vehículo.
+   * @function closeModal
+   */
+  const closeModal = () => {
     modal.classList.remove("is-open");
     backdrop.classList.remove("is-open");
     setTimeout(() => {
       modal.hidden = true;
       backdrop.hidden = true;
     }, 200);
-  }
+  };
 
   grid.addEventListener("click", (e) => {
     const btn = e.target.closest(".view-more");
@@ -483,8 +787,96 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 })();
 
-// === Personalización: agregar accesorios al carrito ===
-(function () {
+// ---------------------------
+// Personalizar: buscador de accesorios
+// ---------------------------
+
+/**
+ * Módulo de búsqueda en accesorios (muestra/oculta cards con [hidden]).
+ * @module BuscadorAccesorios
+ */
+(() => {
+  const input = document.getElementById("buscar-acc");
+  if (!input) return;
+
+  // 2) Grid y cards (con varios fallbacks)
+  const grid =
+    document.getElementById("accesorios-grid") ||
+    document.querySelector(".personalize-main") ||
+    document.querySelector(".personalize-layout") ||
+    document.querySelector("main");
+
+  if (!grid) return;
+
+  // Preferimos accesorios marcados; sino todas las .product-card dentro del grid
+  let cards = [
+    ...grid.querySelectorAll('.product-card[data-kind="accessory"]'),
+  ];
+  if (!cards.length) cards = [...grid.querySelectorAll(".product-card")];
+
+  /**
+   * Normaliza texto: quita tildes, trim y pasa a minúsculas.
+   * @param {string} s
+   * @returns {string}
+   */
+  const norm = (s) =>
+    (s || "")
+      .toString()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLowerCase()
+      .trim();
+
+  /**
+   * Extrae texto representativo de una card (dataset + título + meta).
+   * @param {HTMLElement} card
+   * @returns {string}
+   */
+  const textoCard = (card) => {
+    const dn = card.dataset.name || card.getAttribute("aria-label") || "";
+    const t =
+      card.querySelector(".product-title,h3,h4")?.textContent ||
+      card.getAttribute("data-title") ||
+      "";
+    const m = card.querySelector(".product-meta,.meta")?.textContent || "";
+    return `${dn} ${t} ${m}`;
+  };
+
+  /**
+   * Filtra cards según el texto ingresado en el buscador.
+   * @function filtrar
+   */
+  const filtrar = () => {
+    const q = norm(input.value);
+    cards.forEach((card) => {
+      const match = !q || norm(textoCard(card)).includes(q);
+      if (match) card.removeAttribute("hidden");
+      else card.setAttribute("hidden", "");
+    });
+  };
+
+  // 4) Eventos
+  input.addEventListener("input", filtrar);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      input.value = "";
+      filtrar();
+    }
+  });
+
+  // 5) Primera pasada
+  filtrar();
+})();
+
+// ---------------------------
+// Personalización: agregar accesorios al carrito
+// ---------------------------
+
+/**
+ * Módulo que permite agregar/quitar accesorios dentro de “Personalizar”.
+ * @module AccesoriosCarrito
+ */
+(() => {
   const gridAcc = document.getElementById("accesorios-grid");
   if (!gridAcc) return;
 
@@ -532,30 +924,52 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 })();
 
-(function () {
-    const track = document.querySelector('.slider__track');
-    const slides = Array.from(track.querySelectorAll('.slider__slide'));
-    const prev = document.getElementById('prevSlide');
-    const next = document.getElementById('nextSlide');
-    const dots = Array.from(document.querySelectorAll('.slider__dot'));
+// ---------------------------
+// Carrusel accesible (dots con aria-current, teclas ← →)
+// ---------------------------
 
-    let index = slides.findIndex(s => s.classList.contains('is-active'));
-    const go = (i) => {
-      index = (i + slides.length) % slides.length;
-      slides.forEach((s, k) => {
-        s.classList.toggle('is-active', k === index);
-        s.setAttribute('aria-hidden', k === index ? 'false' : 'true');
-      });
-      dots.forEach((d, k) => d.classList.toggle('is-active', k === index));
-    };
+/**
+ * Módulo de carrusel accesible: gestiona “dots” y navegación por teclado.
+ * @module CarruselAccesible
+ */
+(() => {
+  const track = document.querySelector(".slider__track");
+  const slides = Array.from(track.querySelectorAll(".slider__slide"));
+  const prev = document.getElementById("prevSlide");
+  const next = document.getElementById("nextSlide");
+  const dots = Array.from(document.querySelectorAll(".slider__dot"));
 
-    prev.addEventListener('click', () => go(index - 1));
-    next.addEventListener('click', () => go(index + 1));
-    dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+  /** Índice actual del carrusel accesible. */
+  let index = slides.findIndex((s) => s.classList.contains("is-active"));
 
-    // Accesibilidad con teclado: ← → para navegar
-    document.querySelector('.slider').addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { go(index - 1); }
-      if (e.key === 'ArrowRight') { go(index + 1); }
+  /**
+   * Cambia al slide indicado y sincroniza estados visuales/ARIA.
+   * @param {number} i - Índice destino (se normaliza en módulo).
+   */
+  const go = (i) => {
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => {
+      s.classList.toggle("is-active", k === index);
+      s.setAttribute("aria-hidden", k === index ? "false" : "true");
     });
-  })();
+    dots.forEach((d, k) => {
+      const active = k === index;
+      d.classList.toggle("is-active", active);
+      d.setAttribute("aria-current", active ? "true" : "false");
+    });
+  };
+
+  prev.addEventListener("click", () => go(index - 1));
+  next.addEventListener("click", () => go(index + 1));
+  dots.forEach((d, k) => d.addEventListener("click", () => go(k)));
+
+  // Accesibilidad con teclado: ← → para navegar
+  document.querySelector(".slider").addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      go(index - 1);
+    }
+    if (e.key === "ArrowRight") {
+      go(index + 1);
+    }
+  });
+})();
