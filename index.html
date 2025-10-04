@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-view="inicio">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,7 +34,7 @@
           <h1 class="brand__title" id="top">Aurum Motors</h1>
         </div>
         <nav class="main-nav" aria-label="Navegación principal">
-          <a class="is-primary" href="index.html">Inicio</a>
+          <a href="index.html">Inicio</a>
           <a href="catalogo.html">Catálogo</a>
           <a href="catalogo.html?tipo=auto">Autos</a>
           <a href="catalogo.html?tipo=camioneta">Camionetas</a>
@@ -199,7 +199,12 @@
             </div>
           </div>
           <p id="resultado" aria-live="polite"></p>
-          <button id="calc-btn" class="btn" type="button">
+          <button
+            id="calc-btn"
+            class="btn"
+            type="button"
+            onclick="calcularCuota()"
+          >
             Calcular cuota
           </button>
         </section>

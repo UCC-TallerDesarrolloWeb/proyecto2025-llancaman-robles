@@ -10,13 +10,20 @@
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
+
 /* Activo del nav según data-view (sin JS tardío) */
 html[data-view="auto"] .main-nav a[href*="tipo=auto"],
 html[data-view="camioneta"] .main-nav a[href*="tipo=camioneta"],
 html[data-view="catalogo"] .main-nav a[href$="catalogo.html"] {
   /* mismo estilo que .is-primary */
-  color: var(--brand-ink, #f7d26a);
+  color: var(--gold);
   background: rgba(247, 210, 106, 0.08);
+  border-color: currentColor;
+}
+
+html[data-view="inicio"] .main-nav a[href$="index.html"] {
+  color: var(--gold);
+  background: rgba(247,210,106,0.08);
   border-color: currentColor;
 }
 

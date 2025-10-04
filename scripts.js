@@ -1,3 +1,51 @@
+// Marca la vista activa según la página actual
+(() => {
+  const file = location.pathname.split("/").pop() || "index.html";
+  const view =
+    file.includes("catalogo") ? "catalogo" :
+    file.includes("personalizar") ? "personalizar" :
+    file.includes("autos") ? "auto" :
+    file.includes("camionetas") ? "camioneta" :
+    "inicio";
+  document.documentElement.setAttribute("data-view", view);
+})();
+
+
+
+// Prefiltro inicial por URL/Hash: SOLO para catalogo.html
+(() => {
+  const file = location.pathname.split("/").pop() || "index.html";
+  if (!file.includes("catalogo")) return; // ← no tocar otras páginas
+
+  const params = new URLSearchParams(location.search);
+  let t = params.get("tipo"); // 'auto' | 'camioneta' | null
+
+  // Fallback por hash antiguo
+  if (!t) {
+    const h = (location.hash || "").toLowerCase();
+    if (h === "#autos") t = "auto";
+    if (h === "#camionetas") t = "camioneta";
+  }
+
+  // En catálogo: 'auto' | 'camioneta' | 'catalogo'
+  const v = t ? t : "catalogo";
+  document.documentElement.setAttribute("data-view", v);
+
+  // Ocultar el fieldset "Tipo" si hay prefiltro (sin !important)
+  if (t) {
+    const st = document.createElement("style");
+    st.textContent =
+      'html[data-view="auto"] #filtro-tipo, html[data-view="camioneta"] #filtro-tipo { display: none; }';
+    document.head.appendChild(st);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const fs = document.getElementById("filtro-tipo");
+      if (fs) fs.hidden = true;
+    });
+  }
+})();
+
+
 // ==== Carrusel simple (index) ====
 /**
  * Índice del slide activo del carrusel simple.
@@ -577,7 +625,6 @@ const attachCartEvents = () => {
 // Inicialización común
 window.addEventListener("DOMContentLoaded", () => {
   const calcBtn = document.getElementById("calc-btn");
-  if (calcBtn) calcBtn.addEventListener("click", calcularCuota);
   updateCartCount();
   attachCartEvents();
   renderCart();
@@ -635,6 +682,32 @@ window.addEventListener("DOMContentLoaded", () => {
   const anioMax = document.getElementById("anio-max");
   const precioMin = document.getElementById("precio-min");
   const precioMax = document.getElementById("precio-max");
+
+  // --- Validación de rangos: no permitir max < min ---
+  [anioMin, anioMax, precioMin, precioMax].forEach((input) => {
+    if (!input) return;
+
+    input.addEventListener("change", () => {
+      // Año
+      if (
+        anioMin.value &&
+        anioMax.value &&
+        Number(anioMax.value) < Number(anioMin.value)
+      ) {
+        alert("El año máximo no puede ser menor que el mínimo.");
+        anioMax.value = anioMin.value;
+      }
+      // Precio
+      if (
+        precioMin.value &&
+        precioMax.value &&
+        Number(precioMax.value) < Number(precioMin.value)
+      ) {
+        alert("El precio máximo no puede ser menor que el mínimo.");
+        precioMax.value = precioMin.value;
+      }
+    });
+  });
 
   const getChecks = (name) =>
     [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(
@@ -927,26 +1000,19 @@ window.addEventListener("DOMContentLoaded", () => {
 // ---------------------------
 // Carrusel accesible (dots con aria-current, teclas ← →)
 // ---------------------------
-
-/**
- * Módulo de carrusel accesible: gestiona “dots” y navegación por teclado.
- * @module CarruselAccesible
- */
 (() => {
   const track = document.querySelector(".slider__track");
+  if (!track) return; // No hay carrusel en esta página
+
   const slides = Array.from(track.querySelectorAll(".slider__slide"));
   const prev = document.getElementById("prevSlide");
   const next = document.getElementById("nextSlide");
   const dots = Array.from(document.querySelectorAll(".slider__dot"));
 
-  /** Índice actual del carrusel accesible. */
-  let index = slides.findIndex((s) => s.classList.contains("is-active"));
+  let index = Math.max(0, slides.findIndex((s) => s.classList.contains("is-active")));
 
-  /**
-   * Cambia al slide indicado y sincroniza estados visuales/ARIA.
-   * @param {number} i - Índice destino (se normaliza en módulo).
-   */
   const go = (i) => {
+    if (!slides.length) return;
     index = (i + slides.length) % slides.length;
     slides.forEach((s, k) => {
       s.classList.toggle("is-active", k === index);
@@ -959,17 +1025,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  prev.addEventListener("click", () => go(index - 1));
-  next.addEventListener("click", () => go(index + 1));
+  prev && prev.addEventListener("click", () => go(index - 1));
+  next && next.addEventListener("click", () => go(index + 1));
   dots.forEach((d, k) => d.addEventListener("click", () => go(k)));
 
-  // Accesibilidad con teclado: ← → para navegar
-  document.querySelector(".slider").addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") {
-      go(index - 1);
-    }
-    if (e.key === "ArrowRight") {
-      go(index + 1);
-    }
-  });
+  const sliderRoot = document.querySelector(".slider");
+  sliderRoot &&
+    sliderRoot.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") go(index - 1);
+      if (e.key === "ArrowRight") go(index + 1);
+    });
 })();

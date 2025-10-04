@@ -20,31 +20,6 @@
       href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
       rel="stylesheet"
     />
-    <script>
-      (function () {
-        var params = new URLSearchParams(location.search);
-        var t = params.get("tipo"); // 'auto' | 'camioneta' | null
-
-        // fallback por hash antiguo
-        if (!t) {
-          var h = (location.hash || "").toLowerCase();
-          if (h === "#autos") t = "auto";
-          if (h === "#camionetas") t = "camioneta";
-        }
-
-        // 1) setear data-view antes del primer paint
-        var v = t ? t : "catalogo";
-        document.documentElement.setAttribute("data-view", v);
-
-        // 2) ocultar el fieldset "Tipo" si v=auto|camioneta (evita flash)
-        if (t) {
-          var st = document.createElement("style");
-          st.textContent = "#filtro-tipo{display:none !important}";
-          document.head.appendChild(st);
-        }
-      })();
-    </script>
-
     <link rel="stylesheet" href="styles.css" />
   </head>
 
