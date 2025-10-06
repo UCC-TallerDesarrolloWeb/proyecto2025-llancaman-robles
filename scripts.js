@@ -10,7 +10,37 @@
   document.documentElement.setAttribute("data-view", view);
 })();
 
+// ====== Menú desplegable (mobile) ======
+(() => {
+  const header = document.querySelector('.site-header');
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.querySelector('.main-nav');
+  if (!header || !toggle || !nav) return;
 
+  const close = () => {
+    header.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  };
+  const open = () => {
+    header.classList.add('nav-open');
+    toggle.setAttribute('aria-expanded', 'true');
+  };
+
+  toggle.addEventListener('click', () => {
+    const isOpen = header.classList.contains('nav-open');
+    isOpen ? close() : open();
+  });
+
+  // Cerrar al hacer click en un link del menú
+  nav.addEventListener('click', (e) => {
+    if (e.target.matches('a')) close();
+  });
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+})();
 
 // Prefiltro inicial por URL/Hash: SOLO para catalogo.html
 (() => {
