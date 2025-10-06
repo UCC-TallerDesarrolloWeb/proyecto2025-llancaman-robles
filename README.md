@@ -64,7 +64,7 @@ Características principales:
 
 ## 🌐 GitHub Pages
 Podés acceder al proyecto desplegado en el siguiente link:  
-👉 [Aurum en GitHub Pages](https://usuario.github.io/Proyecto2025-ApellidoAlumno1-ApellidoAlumno2/)
+👉 [Aurum en GitHub Pages](https://ucc-tallerdesarrolloweb.github.io/proyecto2025-llancaman-robles/)
 
 ---
 
