@@ -5,12 +5,20 @@
 
 // 1) Marcar vista según página
 (function () {
-  const file = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-  const view = file.includes("catalogo") ? "catalogo"
-             : file.includes("personalizar") ? "personalizar"
-             : file.includes("autos") ? "auto"
-             : file.includes("camionetas") ? "camioneta"
-             : "inicio";
+  var file = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  var view = "inicio";
+
+  if (file.indexOf("catalogo") > -1) {
+    view = "catalogo";
+    var q = (location.search || "").toLowerCase();
+    if (q.indexOf("tipo=auto") > -1) view = "auto";
+    if (q.indexOf("tipo=camioneta") > -1) view = "camioneta";
+  }
+
+  if (file.indexOf("personalizar") > -1) {
+    view = "personalizar";
+  }
+
   document.documentElement.setAttribute("data-view", view);
 })();
 
