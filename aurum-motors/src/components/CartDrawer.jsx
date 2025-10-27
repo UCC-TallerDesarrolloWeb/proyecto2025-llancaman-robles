@@ -5,74 +5,52 @@ const CartDrawer = () => {
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className={`cart-backdrop${open ? " is-open" : ""}`}
         onClick={() => setOpen(false)}
-        aria-hidden="true"
       />
-
-      {/* Drawer */}
-      <aside
-        className={`cart-drawer${open ? " is-open" : ""}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cart-title"
-        aria-describedby="cart-summary"
-      >
+      <aside className={`cart-drawer${open ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="Carrito">
+        {/* Header */}
         <header className="cart-header">
-          <h2 id="cart-title">Tu carrito</h2>
-          <button
-            className="cart-close"
-            type="button"
-            aria-label="Cerrar carrito"
-            onClick={() => setOpen(false)}
-          >
-            ✕
-          </button>
+          <h2>Vehículos seleccionados</h2>
+          <button className="cart-close" onClick={() => setOpen(false)} aria-label="Cerrar">✕</button>
         </header>
 
-        <div className="cart-items" aria-live="polite">
+        {/* Items */}
+        <div className="cart-items">
           {items.length === 0 ? (
-            <p className="muted" style={{ padding: "12px 16px" }}>
-              Todavía no agregaste productos.
-            </p>
+            <p className="muted">No has seleccionado ningún vehículo.</p>
           ) : (
             items.map((it) => (
               <div key={it.id} className="cart-item">
                 <div className="cart-item__info">
                   <strong>{it.title}</strong>
-                  <small className="muted">USD {it.price.toLocaleString()}</small>
+                  <div className="muted">USD {it.price.toLocaleString()}</div>
                 </div>
+
                 <div className="cart-item__qty">
-                  <button onClick={() => dec(it.id)} aria-label="Quitar uno">−</button>
-                  <span aria-live="polite">{it.qty}</span>
-                  <button onClick={() => inc(it.id)} aria-label="Agregar uno">+</button>
+                  <button onClick={() => dec(it.id)} aria-label="Disminuir">−</button>
+                  <span>{it.qty}</span>
+                  <button onClick={() => inc(it.id)} aria-label="Aumentar">+</button>
                 </div>
-                <button
-                  className="cart-item__remove"
-                  onClick={() => removeItem(it.id)}
-                  aria-label="Eliminar del carrito"
-                >
-                  Eliminar
+
+                <button className="cart-item__remove" onClick={() => removeItem(it.id)}>
+                  Quitar
                 </button>
               </div>
             ))
           )}
         </div>
 
-        <div id="cart-summary" className="cart-summary">
+        {/* Summary */}
+        <div className="cart-summary">
           <div className="cart-total-row">
             <span>Total</span>
             <strong>USD {total.toLocaleString()}</strong>
           </div>
           <div className="cart-actions">
-            <button className="btn" type="button" onClick={clear} disabled={!items.length}>
-              Vaciar
-            </button>
-            <button className="btn" type="button" disabled={!items.length}>
-              Finalizar compra
-            </button>
+            <button className="btn" onClick={clear} disabled={!items.length}>Limpiar selección</button>
+            <button className="btn is-primary" disabled={!items.length}>Enviar solicitud</button>
           </div>
         </div>
       </aside>

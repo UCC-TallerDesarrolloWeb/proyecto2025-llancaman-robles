@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useCart } from "../components/CartContext";
 import ModalVehiculo from "../components/ModalVehiculo";
 
 const Catalogo = () => {
@@ -15,114 +14,22 @@ const Catalogo = () => {
   });
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
 
-  const { addItem } = useCart();
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  // Datos base (tomados de tu HTML original)
+  // traer los datos desde data/db.
+
   useEffect(() => {
-    const data = [
-      {
-        id: "amarok-v6",
-        marca: "Volkswagen",
-        modelo: "Amarok V6",
-        tipo: "Camioneta",
-        anio: 2025,
-        precio: 65000,
-        imagen: "public/vehiculos/AMAROK V61.webp",
-        meta: "4x4 · 2025 · Automática",
-      },
-      {
-        id: "audi-q7",
-        marca: "Audi",
-        modelo: "Q7",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 120000,
-        imagen: "public/vehiculos/AUDI Q71.avif",
-        meta: "SUV · 2025 · Automático",
-      },
-      {
-        id: "audi-rs6",
-        marca: "Audi",
-        modelo: "RS6",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 185000,
-        imagen: "public/vehiculos/AUDI RS61.avif",
-        meta: "Sedán · 2025 · Automático",
-      },
-      {
-        id: "audi-s5-coupe",
-        marca: "Audi",
-        modelo: "S5 Coupe",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 95000,
-        imagen: "public/vehiculos/AUDI S5 COUPE.webp",
-        meta: "Sedán · 2025 · Automático",
-      },
-      {
-        id: "bmw-m4",
-        marca: "BMW",
-        modelo: "M4",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 170000,
-        imagen: "public/vehiculos/BMW M4.jpg",
-        meta: "Sedán · 2025 · Automático",
-      },
-      {
-        id: "bmw-x6",
-        marca: "BMW",
-        modelo: "X6",
-        tipo: "Camioneta",
-        anio: 2025,
-        precio: 140000,
-        imagen: "public/vehiculos/BMW X61.jpg",
-        meta: "SUV · 2025 · Automática",
-      },
-      {
-        id: "ford-f150-raptor",
-        marca: "Ford",
-        modelo: "F150 Raptor",
-        tipo: "Camioneta",
-        anio: 2025,
-        precio: 135000,
-        imagen: "public/vehiculos/F150 RAPTOR.jpeg",
-        meta: "4x4 · 2025 · Automática",
-      },
-      {
-        id: "hilux-gr",
-        marca: "Toyota",
-        modelo: "Hilux GR",
-        tipo: "Camioneta",
-        anio: 2025,
-        precio: 75000,
-        imagen: "public/vehiculos/HILUX GR1.jpg",
-        meta: "4x4 · 2025 · Automática",
-      },
-      {
-        id: "mb-a45",
-        marca: "Mercedes-Benz",
-        modelo: "A45",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 80000,
-        imagen: "public/vehiculos/MB A45.jpg",
-        meta: "Sedán · 2025 · Automático",
-      },
-      {
-        id: "mb-camg",
-        marca: "Mercedes-Benz",
-        modelo: "Clase C AMG",
-        tipo: "Auto",
-        anio: 2025,
-        precio: 95000,
-        imagen: "public/vehiculos/MB CLASE C AMG2.jpeg",
-        meta: "Sedán · 2025 · Automático",
-      },
-    ];
-    setVehiculos(data);
+    const fetchVehiculos = async () => {
+      try {
+        const response = await fetch("src/data/db.json");
+        const data = await response.json();
+        setVehiculos(data.vehiculos);
+      } catch (error) {
+        console.error("Error al cargar los vehículos:", error);
+      }
+    };
+
+    fetchVehiculos();
   }, []);
 
   // Filtrado
@@ -185,7 +92,9 @@ const Catalogo = () => {
           value={filtros.buscar}
           onChange={handleChange}
         />
-        <button className="btn" type="button">Buscar</button>
+        <button className="btn" type="button">
+          Buscar
+        </button>
         <small className="help">Ej.: "BMW", "Hilux", "A6"</small>
       </section>
 
@@ -221,7 +130,14 @@ const Catalogo = () => {
           <fieldset className="card">
             <legend>Marca</legend>
             <div className="stack">
-              {["audi", "bmw", "mercedes-benz", "toyota", "volkswagen", "ford"].map((m) => (
+              {[
+                "audi",
+                "bmw",
+                "mercedes-benz",
+                "toyota",
+                "volkswagen",
+                "ford",
+              ].map((m) => (
                 <label key={m}>
                   <input
                     type="checkbox"
@@ -318,26 +234,16 @@ const Catalogo = () => {
               </figure>
 
               <div className="product-body">
-                <h3 className="product-title">{v.marca} {v.modelo}</h3>
+                <h3 className="product-title">
+                  {v.marca} {v.modelo}
+                </h3>
                 <p className="product-meta">{v.meta}</p>
-                <strong className="product-price">USD {v.precio.toLocaleString()}</strong>
+                <strong className="product-price">
+                  USD {v.precio.toLocaleString()}
+                </strong>
 
                 {isLoggedIn ? (
                   <div className="stack two">
-                    <button
-                      className="btn"
-                      type="button"
-                      onClick={() =>
-                        addItem({
-                          id: v.id,
-                          title: `${v.marca} ${v.modelo}`,
-                          price: v.precio,
-                          qty: 1,
-                        })
-                      }
-                    >
-                      Agregar al carrito
-                    </button>
                     <button
                       className="btn view-more"
                       type="button"

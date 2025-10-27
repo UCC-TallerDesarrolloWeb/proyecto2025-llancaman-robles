@@ -5,7 +5,6 @@ import { useCart } from "./CartContext";
 const CUSTOM_STORAGE = "aurum_customizations";
 const SELECTED_ID = "aurum_selected_vehicle_id";
 
-// Valores iniciales por defecto
 const DEFAULT_CUSTOM = {
   color: "Negro",
   paquete: "Base",
@@ -18,40 +17,27 @@ const ModalVehiculo = ({ vehiculo, onClose }) => {
   const navigate = useNavigate();
   const { addItem } = useCart();
 
-  // Evita scroll de fondo mientras está abierto
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "auto");
+    return () => { document.body.style.overflow = "auto"; };
   }, []);
 
   if (!vehiculo) return null;
 
-  const elegirVehiculo = () => {
-    // 1) Agregar al carrito
-    addItem({
-      id: vehiculo.id,
-      title: `${vehiculo.marca} ${vehiculo.modelo}`,
-      price: vehiculo.precio,
-      qty: 1,
-    });
+  const { id, marca, modelo, precio, imagen, meta } = vehiculo;
+  const title = `${marca} ${modelo}`;
 
-    // 2) Crear personalización inicial si no existe
+  const elegirVehiculo = () => {
+    addItem({ id, title, price: precio, qty: 1 });
+
     try {
       const raw = localStorage.getItem(CUSTOM_STORAGE);
       const map = raw ? JSON.parse(raw) : {};
-      if (!map[vehiculo.id]) {
-        map[vehiculo.id] = { ...DEFAULT_CUSTOM };
-        localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(map));
-      }
+      if (!map[id]) map[id] = { ...DEFAULT_CUSTOM };
+      localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(map));
+      localStorage.setItem(SELECTED_ID, id);
     } catch (e) {
-      console.error("Error guardando personalización inicial:", e);
-    }
-
-    // 3) Guardar seleccionado y navegar
-    try {
-      localStorage.setItem(SELECTED_ID, vehiculo.id);
-    } catch (e) {
-      console.error("Error guardando vehículo seleccionado:", e);
+      console.error("Error guardando selección/personalización:", e);
     }
 
     navigate("/personalizar");
@@ -60,32 +46,19 @@ const ModalVehiculo = ({ vehiculo, onClose }) => {
   return (
     <>
       <div className="modal-backdrop is-open" onClick={onClose}></div>
-      <section
-        className="modal is-open"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="veh-title"
-      >
-        <button className="modal-close" onClick={onClose} aria-label="Cerrar">
-          ✕
-        </button>
+      <section className="modal is-open" role="dialog" aria-modal="true" aria-labelledby="veh-title">
+        <button className="modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
 
         <div className="modal-body">
           <figure className="modal-media">
-            <img src={vehiculo.imagen} alt={vehiculo.modelo} />
+            <img src={imagen} alt={modelo} />
           </figure>
 
           <div className="modal-content">
-            <h3 id="veh-title">
-              {vehiculo.marca} {vehiculo.modelo}
-            </h3>
-            <p className="meta">{vehiculo.meta}</p>
-            <p className="muted">
-              Este modelo acepta personalización y agregados opcionales.
-            </p>
-            <strong className="price">
-              USD {vehiculo.precio.toLocaleString()}
-            </strong>
+            <h3 id="veh-title">{title}</h3>
+            <p className="meta">{meta}</p>
+            <p className="muted">Este modelo acepta personalización y agregados opcionales.</p>
+            <strong className="price">USD {precio.toLocaleString()}</strong>
 
             <div className="modal-actions">
               <button className="btn is-primary" onClick={elegirVehiculo}>

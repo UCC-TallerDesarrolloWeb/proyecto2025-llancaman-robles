@@ -23,7 +23,7 @@ const Layout = () => {
         <div className="container header-inner">
           <div className="brand">
             <NavLink to="/" className="brand__logo-link" aria-label="Ir a inicio">
-              <img src="public/logo.png" alt="Logo de Aurum" className="brand__logo" />
+              <img src="/logo.png" alt="Logo de Aurum" className="brand__logo" />
             </NavLink>
             <h1 className="brand__title">Aurum Motors</h1>
           </div>
@@ -41,8 +41,6 @@ const Layout = () => {
           <nav className="main-nav" aria-label="Navegación principal">
             <NavLink to="/" end>Inicio</NavLink>
             <NavLink to="/catalogo">Catálogo</NavLink>
-            <NavLink to="/autos">Autos</NavLink>
-            <NavLink to="/camionetas">Camionetas</NavLink>
             <NavLink to="/personalizar">Personalizar</NavLink>
 
             {/* Botón Carrito (clases originales) */}

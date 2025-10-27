@@ -1,0 +1,514 @@
+{
+  "vehiculos": [
+    {
+      "id": "amarok-v6",
+      "marca": "Volkswagen",
+      "modelo": "Amarok V6",
+      "tipo": "Camioneta",
+      "anio": 2025,
+      "precio": 65000,
+      "imagen": "/vehiculos/AMAROK V61.webp",
+      "meta": "4x4 · 2025 · Automática"
+    },
+    {
+      "id": "audi-q7",
+      "marca": "Audi",
+      "modelo": "Q7",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 120000,
+      "imagen": "/vehiculos/AUDI Q71.avif",
+      "meta": "SUV · 2025 · Automático"
+    },
+    {
+      "id": "audi-rs6",
+      "marca": "Audi",
+      "modelo": "RS6",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 185000,
+      "imagen": "/vehiculos/AUDI RS61.avif",
+      "meta": "Sedán · 2025 · Automático"
+    },
+    {
+      "id": "audi-s5-coupe",
+      "marca": "Audi",
+      "modelo": "S5 Coupe",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 95000,
+      "imagen": "/vehiculos/AUDI S5 COUPE.webp",
+      "meta": "Sedán · 2025 · Automático"
+    },
+    {
+      "id": "bmw-m4",
+      "marca": "BMW",
+      "modelo": "M4",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 170000,
+      "imagen": "/vehiculos/BMW M4.jpg",
+      "meta": "Sedán · 2025 · Automático"
+    },
+    {
+      "id": "bmw-x6",
+      "marca": "BMW",
+      "modelo": "X6",
+      "tipo": "Camioneta",
+      "anio": 2025,
+      "precio": 140000,
+      "imagen": "/vehiculos/BMW X61.jpg",
+      "meta": "SUV · 2025 · Automática"
+    },
+    {
+      "id": "ford-f150-raptor",
+      "marca": "Ford",
+      "modelo": "F150 Raptor",
+      "tipo": "Camioneta",
+      "anio": 2025,
+      "precio": 135000,
+      "imagen": "/vehiculos/F150 RAPTOR.jpeg",
+      "meta": "4x4 · 2025 · Automática"
+    },
+    {
+      "id": "hilux-gr",
+      "marca": "Toyota",
+      "modelo": "Hilux GR",
+      "tipo": "Camioneta",
+      "anio": 2025,
+      "precio": 75000,
+      "imagen": "/vehiculos/HILUX GR1.jpg",
+      "meta": "4x4 · 2025 · Automática"
+    },
+    {
+      "id": "mb-a45",
+      "marca": "Mercedes-Benz",
+      "modelo": "A45",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 80000,
+      "imagen": "/vehiculos/MB A45.jpg",
+      "meta": "Sedán · 2025 · Automático"
+    },
+    {
+      "id": "mb-camg",
+      "marca": "Mercedes-Benz",
+      "modelo": "Clase C AMG",
+      "tipo": "Auto",
+      "anio": 2025,
+      "precio": 95000,
+      "imagen": "/vehiculos/MB CLASE C AMG2.jpeg",
+      "meta": "Sedán · 2025 · Automático"
+    }
+  ],
+  "cart": [
+    {
+      "id": "f13c",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "9233",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "20b6",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "37b3",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "6e98",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "4425",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "1294",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "aac0",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "a8f1",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "dd69",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "64b9",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "145f",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "e4d5",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "7ae5",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "4412",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "c66c",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "6305",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "9071",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "cc9f",
+      "vehiculoId": "bmw-x6",
+      "nombre": "BMW X6",
+      "unitPrice": 140000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "a3b2",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "c57d",
+      "vehiculoId": "audi-rs6",
+      "nombre": "Audi RS6",
+      "unitPrice": 185000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "9a36",
+      "vehiculoId": "audi-s5-coupe",
+      "nombre": "Audi S5 Coupe",
+      "unitPrice": 95000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "af91",
+      "vehiculoId": "audi-s5-coupe",
+      "nombre": "Audi S5 Coupe",
+      "unitPrice": 95000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "77c8",
+      "vehiculoId": "bmw-m4",
+      "nombre": "BMW M4",
+      "unitPrice": 170000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "959c",
+      "vehiculoId": "bmw-x6",
+      "nombre": "BMW X6",
+      "unitPrice": 140000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "ae8c",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "a3d2",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "d6f4",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "c4d3",
+      "vehiculoId": "mb-camg",
+      "nombre": "Mercedes-Benz Clase C AMG",
+      "unitPrice": 95000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "8df5",
+      "vehiculoId": "mb-camg",
+      "nombre": "Mercedes-Benz Clase C AMG",
+      "unitPrice": 95000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "15cf",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "bf0b",
+      "vehiculoId": "bmw-m4",
+      "nombre": "BMW M4",
+      "unitPrice": 170000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "fbeb",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "7be0",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "f650",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "4fda",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "0383",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "2ecb",
+      "vehiculoId": "bmw-x6",
+      "nombre": "BMW X6",
+      "unitPrice": 140000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "4245",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "631a",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "fc0e",
+      "vehiculoId": "bmw-x6",
+      "nombre": "BMW X6",
+      "unitPrice": 140000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "f470",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "49cd",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "36ad",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "d8ce",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "db83",
+      "vehiculoId": "audi-rs6",
+      "nombre": "Audi RS6",
+      "unitPrice": 185000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "3151",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "a8bd",
+      "vehiculoId": "audi-q7",
+      "nombre": "Audi Q7",
+      "unitPrice": 120000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "abff",
+      "vehiculoId": "audi-rs6",
+      "nombre": "Audi RS6",
+      "unitPrice": 185000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "8b96",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    },
+    {
+      "id": "3c73",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
+    }
+  ]
+}

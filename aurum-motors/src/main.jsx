@@ -9,8 +9,6 @@ import Home from "./Home.jsx";
 import Login from "./Login.jsx";
 
 import Catalogo from "./pages/Catalogo.jsx";
-import Autos from "./pages/Autos.jsx";
-import Camionetas from "./pages/Camionetas.jsx";
 import Personalizar from "./pages/Personalizar.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -22,8 +20,6 @@ createRoot(document.getElementById("root")).render(
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="catalogo" element={<Catalogo />} />
-            <Route path="autos" element={<Autos />} />
-            <Route path="camionetas" element={<Camionetas />} />
             <Route path="personalizar" element={<Personalizar />} />
           </Route>
         </Routes>

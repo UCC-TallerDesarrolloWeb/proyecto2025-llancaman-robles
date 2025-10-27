@@ -1,44 +1,94 @@
+import { useEffect, useState } from "react";
+
+const SLIDES = [
+  {
+    src: "/vehiculos/AUDI RS61.avif",
+    title: "Audi RS6",
+    desc: "Performance y diseño para amantes de la velocidad.",
+    alt: "AUDI RS6 negro",
+  },
+  {
+    src: "/vehiculos/F150 RAPTOR.jpeg",
+    title: "Ford F150 Raptor",
+    desc: "Espacio, confort y tecnología sin compromisos.",
+    alt: "Ford F-150 Raptor negra",
+  },
+  {
+    src: "/vehiculos/MB CLASE C AMG2.jpeg",
+    title: "Mercedes Benz Clase C AMG",
+    desc: "Elegancia y sobriedad para tu día a día.",
+    alt: "Mercedes Benz Clase C AMG gris",
+  },
+];
+
 const Home = () => {
+  const [idx, setIdx] = useState(0);
+
+  const go = (i) => setIdx((i + SLIDES.length) % SLIDES.length);
+  const next = () => go(idx + 1);
+  const prev = () => go(idx - 1);
+
+  useEffect(() => {
+    const id = setInterval(next, 3000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx]);
+
   return (
     <main>
       {/* Slider */}
       <div className="container section">
         <section className="slider" aria-label="Galería de modelos destacados">
           <div className="slider__track">
-            <figure className="slider__slide is-active">
-              <img src="public/vehiculos/AUDI RS61.avif" alt="AUDI RS6 negro" />
-              <figcaption className="slider__caption">
-                <h2>Audi RS6</h2>
-                <p>Performance y diseño para amantes de la velocidad.</p>
-              </figcaption>
-            </figure>
-
-            <figure className="slider__slide" aria-hidden="true">
-              <img src="public/vehiculos/F150 RAPTOR.jpeg" alt="Ford F-150 Raptor negra" />
-              <figcaption className="slider__caption">
-                <h2>Ford F150 Raptor</h2>
-                <p>Espacio, confort y tecnología sin compromisos.</p>
-              </figcaption>
-            </figure>
-
-            <figure className="slider__slide" aria-hidden="true">
-              <img src="public/vehiculos/MB CLASE C AMG2.jpeg" alt="Mercedes Benz Clase C AMG gris" />
-              <figcaption className="slider__caption">
-                <h2>Mercedes Benz Clase C AMG</h2>
-                <p>Elegancia y sobriedad para tu día a día.</p>
-              </figcaption>
-            </figure>
+            {SLIDES.map((s, i) => (
+              <figure
+                key={s.title}
+                className={`slider__slide${i === idx ? " is-active" : ""}`}
+                aria-hidden={i === idx ? "false" : "true"}
+              >
+                <img src={s.src} alt={s.alt} />
+                <figcaption className="slider__caption">
+                  <h2>{s.title}</h2>
+                  <p>{s.desc}</p>
+                </figcaption>
+              </figure>
+            ))}
           </div>
 
           <div className="slider__controls">
-            <button id="prevSlide" className="ctrl" type="button" aria-label="Anterior">&#10094;</button>
-            <button id="nextSlide" className="ctrl" type="button" aria-label="Siguiente">&#10095;</button>
+            <button
+              className="ctrl"
+              type="button"
+              aria-label="Anterior"
+              onClick={prev}
+            >
+              &#10094;
+            </button>
+            <button
+              className="ctrl"
+              type="button"
+              aria-label="Siguiente"
+              onClick={next}
+            >
+              &#10095;
+            </button>
           </div>
 
-          <div className="slider__dots" role="group" aria-label="Paginación del carrusel">
-            <button className="slider__dot is-active" type="button" aria-label="Ir a la imagen 1" aria-current="true"></button>
-            <button className="slider__dot" type="button" aria-label="Ir a la imagen 2"></button>
-            <button className="slider__dot" type="button" aria-label="Ir a la imagen 3"></button>
+          <div
+            className="slider__dots"
+            role="group"
+            aria-label="Paginación del carrusel"
+          >
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                className={`slider__dot${i === idx ? " is-active" : ""}`}
+                type="button"
+                aria-label={`Ir a la imagen ${i + 1}`}
+                aria-current={i === idx ? "true" : undefined}
+                onClick={() => go(i)}
+              />
+            ))}
           </div>
         </section>
       </div>
@@ -48,10 +98,11 @@ const Home = () => {
         <section className="card" id="quienes-somos">
           <h3>¿Quiénes somos?</h3>
           <p className="lead">
-            En <strong>Aurum</strong> nos especializamos en la venta de autos de alta gama,
-            combinando exclusividad, diseño y potencia. Creemos que cada vehículo es más que
-            un medio de transporte: es una experiencia de lujo. Ofrecemos atención personalizada
-            y un servicio confiable para acompañar a nuestros clientes en cada paso.
+            En <strong>Aurum</strong> nos especializamos en la venta de autos de
+            alta gama, combinando exclusividad, diseño y potencia. Creemos que
+            cada vehículo es más que un medio de transporte: es una experiencia
+            de lujo. Ofrecemos atención personalizada y un servicio confiable
+            para acompañar a nuestros clientes en cada paso.
           </p>
         </section>
       </div>
@@ -63,15 +114,33 @@ const Home = () => {
           <div className="form-grid">
             <div className="form-control">
               <label htmlFor="precio">Precio del vehículo (USD)</label>
-              <input id="precio" name="precio" type="number" placeholder="Ej: 45000" inputMode="numeric" />
+              <input
+                id="precio"
+                name="precio"
+                type="number"
+                placeholder="Ej: 45000"
+                inputMode="numeric"
+              />
             </div>
             <div className="form-control">
               <label htmlFor="anticipo">Anticipo (USD)</label>
-              <input id="anticipo" name="anticipo" type="number" placeholder="Ej: 10000" inputMode="numeric" />
+              <input
+                id="anticipo"
+                name="anticipo"
+                type="number"
+                placeholder="Ej: 10000"
+                inputMode="numeric"
+              />
             </div>
             <div className="form-control">
               <label htmlFor="tasa">Tasa nominal anual (%)</label>
-              <input id="tasa" name="tasa" type="number" placeholder="Ej: 48" inputMode="decimal" />
+              <input
+                id="tasa"
+                name="tasa"
+                type="number"
+                placeholder="Ej: 48"
+                inputMode="decimal"
+              />
             </div>
             <div className="form-control">
               <label htmlFor="meses">Meses</label>
@@ -85,7 +154,12 @@ const Home = () => {
           </div>
 
           <p id="resultado" aria-live="polite"></p>
-          <button id="calc-btn" className="btn" type="button" onClick={() => window.calcularCuota?.()}>
+          <button
+            id="calc-btn"
+            className="btn"
+            type="button"
+            onClick={() => window.calcularCuota?.()}
+          >
             Calcular cuota
           </button>
         </section>
