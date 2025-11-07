@@ -733,6 +733,14 @@
       "unitPrice": 80000,
       "qty": 1,
       "imagen": ""
+    },
+    {
+      "id": "7fe5",
+      "vehiculoId": "amarok-v6",
+      "nombre": "Volkswagen Amarok V6",
+      "unitPrice": 65000,
+      "qty": 1,
+      "imagen": ""
     }
   ]
 }

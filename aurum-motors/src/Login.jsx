@@ -17,8 +17,8 @@ const Login = () => {
   };
 
   return (
-    <main className="container section" style={{ minHeight: "60vh" }}>
-      <section className="card" style={{ maxWidth: 720, marginInline: "auto" }}>
+    <main className="container section">
+      <section className="card">
         <h1>Iniciar Sesión</h1>
 
         <form className="form-grid" onSubmit={handlerLogin}>
@@ -47,7 +47,9 @@ const Login = () => {
           </div>
 
           <div className="form-control" style={{ gridColumn: "1 / -1" }}>
-            <button type="submit" className="btn is-primary">Ingresar</button>
+            <button type="submit" className="btn is-primary">
+              Ingresar
+            </button>
           </div>
         </form>
       </section>

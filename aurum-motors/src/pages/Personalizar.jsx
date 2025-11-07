@@ -1,12 +1,20 @@
+// Personalizar.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useCart } from "../components/CartContext";
+import { useCart } from "@components/CartContext";
 import { NavLink } from "react-router-dom";
 
 const CUSTOM_STORAGE = "aurum_customizations";
 const SELECTED_ID = "aurum_selected_vehicle_id";
 
 const PRECIOS = {
-  color: { Negro: 0, Blanco: 0, Gris: 0, Azul: 350, Rojo: 350, "Negro mate": 900 },
+  color: {
+    Negro: 0,
+    Blanco: 0,
+    Gris: 0,
+    Azul: 350,
+    Rojo: 350,
+    "Negro mate": 900,
+  },
   paquete: { Base: 0, Comfortline: 1200, Highline: 2800, Premium: 5200 },
   llantas: { "18”": 0, "19”": 700, "20”": 1200 },
   garantia: { "Fábrica (2 años)": 0, "+1 año": 600, "+2 años": 1000 },
@@ -19,11 +27,24 @@ const PRECIOS = {
   },
 };
 
+function calcularExtras(cfg) {
+  if (!cfg) return 0;
+  const base =
+    (PRECIOS.color[cfg.color] ?? 0) +
+    (PRECIOS.paquete[cfg.paquete] ?? 0) +
+    (PRECIOS.llantas[cfg.llantas] ?? 0) +
+    (PRECIOS.garantia[cfg.garantia] ?? 0);
+  const acc = (cfg.accesorios || []).reduce(
+    (s, a) => s + (PRECIOS.accesorios[a] ?? 0),
+    0
+  );
+  return base + acc;
+}
+
 export default function Personalizar() {
-  const { items, total } = useCart();
+  const { items, total, setOpen } = useCart();
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  // ====== estado de customizaciones por vehículo { [id]: { ... } } ======
   const [customs, setCustoms] = useState({});
   useEffect(() => {
     try {
@@ -34,14 +55,16 @@ export default function Personalizar() {
     }
   }, []);
 
-  // ====== id seleccionado ======
   const [selectedId, setSelectedId] = useState(null);
   useEffect(() => {
     if (!items.length) return;
     try {
-      const remembered = localStorage.getItem(SELECTED_ID);
-      if (remembered && items.some((i) => i.id === remembered)) {
-        setSelectedId(remembered);
+      const rem = localStorage.getItem(SELECTED_ID);
+      if (rem) {
+        const found = items.find(
+          (i) => String(i.id) === rem || Number(rem) === i.id
+        );
+        if (found) setSelectedId(found.id);
         localStorage.removeItem(SELECTED_ID);
       } else {
         setSelectedId((prev) => prev ?? items[0].id);
@@ -49,13 +72,10 @@ export default function Personalizar() {
     } catch {
       setSelectedId((prev) => prev ?? items[0].id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items.length]);
+  }, [items]);
 
-  // ====== datos de vehículos (para imagen/meta si están en el server) ======
   const [vehiculosMap, setVehiculosMap] = useState({});
   useEffect(() => {
-    // Si tenés JSON Server levantado, esto completa imagen/meta por id
     const load = async () => {
       try {
         const res = await fetch("http://localhost:4000/vehiculos");
@@ -64,14 +84,11 @@ export default function Personalizar() {
         const map = {};
         data.forEach((v) => (map[v.id] = v));
         setVehiculosMap(map);
-      } catch {
-        // silencioso: si no hay server, seguimos sin imagen
-      }
+      } catch {}
     };
     load();
   }, []);
 
-  // ====== opciones actuales del seleccionado (con defaults) ======
   const current = useMemo(
     () =>
       customs[selectedId] ?? {
@@ -87,37 +104,41 @@ export default function Personalizar() {
   const setCurrent = (patch) => {
     if (!selectedId) return;
     setCustoms((prev) => {
-      const next = { ...prev, [selectedId]: { ...current, ...patch } };
+      const prevCfg = prev[selectedId] ?? {};
+      const nextMap = { ...prev, [selectedId]: { ...prevCfg, ...patch } };
       try {
-        localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(next));
+        localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(nextMap));
       } catch (e) {
         console.error("Error guardando personalizaciones:", e);
       }
-      return next;
+      return nextMap;
     });
   };
 
   const opcionesRef = useRef(null);
-
   const extrasTotal = useMemo(() => calcularExtras(current), [current]);
 
   if (!isLoggedIn) {
     return (
-      <main className="container section" style={{ minHeight: "60vh" }}>
+      <main className="container section min-h-60vh">
         <h1>Personalizar</h1>
-        <p className="large">Debes iniciar sesión para personalizar un vehículo.</p>
-        <NavLink to="/login" className="btn is-primary">Iniciar sesión</NavLink>
+        <p className="large">
+          Debes iniciar sesión para personalizar un vehículo.
+        </p>
+        <NavLink to="/login" className="btn is-primary">
+          Iniciar sesión
+        </NavLink>
       </main>
     );
   }
 
   if (!items.length) {
     return (
-      <main className="container section" style={{ minHeight: "60vh" }}>
+      <main className="container section min-h-60vh">
         <h1>Personalizar</h1>
         <p className="large">
-          No has seleccionado ningun vehículo. Agregá uno desde el{""}
-          <NavLink to="/catalogo" className="btn" style={{ marginLeft: 8 }}>
+          No has seleccionado ningún vehículo. Agregá uno desde el{" "}
+          <NavLink to="/catalogo" className="btn">
             Catálogo
           </NavLink>
         </p>
@@ -132,18 +153,27 @@ export default function Personalizar() {
   };
 
   const handleGuardar = () => {
-    alert("¡Configuración guardada para este vehículo!");
+    try {
+      const raw = localStorage.getItem(CUSTOM_STORAGE);
+      const all = raw ? JSON.parse(raw) : {};
+      all[selectedId] = {
+        ...(all[selectedId] ?? current),
+        _extras: calcularExtras(current),
+      };
+      localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(all));
+      alert("¡Configuración guardada para este vehículo!");
+    } catch (e) {
+      console.error("Error guardando configuración:", e);
+    }
   };
 
-  // ====== UI ======
   const seleccionado = items.find((i) => i.id === selectedId);
   const detalleSel = seleccionado ? vehiculosMap[seleccionado.id] : null;
 
   return (
-    <main className="container section personalize-layout" style={{ minHeight: "60vh" }}>
-      {/* IZQUIERDA: lista de autos + opciones */}
+    <main className="container section personalize-layout">
+      {/* IZQUIERDA */}
       <div>
-        {/* Lista de autos del carrito */}
         <section className="card">
           <h3>Vehículo elegido</h3>
           <div className="catalog-grid">
@@ -156,11 +186,10 @@ export default function Personalizar() {
                   key={it.id}
                   className={`product-card${isActive ? " is-selected" : ""}`}
                   onClick={() => setSelectedId(it.id)}
-                  style={{ cursor: "pointer" }}
                   title="Seleccionar para personalizar"
                 >
                   <figure className="product-media">
-                    {v?.imagen ? <img src={v.imagen} alt={it.title} /> : <div style={{height:"100%",background:"#0b0c10"}} />}
+                    {v?.imagen ? <img src={v.imagen} alt={it.title} /> : null}
                   </figure>
                   <div className="product-body">
                     <h3 className="product-title">{it.title}</h3>
@@ -168,7 +197,9 @@ export default function Personalizar() {
                       Cant.: {it.qty} · USD {it.price.toLocaleString()}
                     </p>
                     {extras ? (
-                      <p className="help">Extras: USD {extras.toLocaleString()}</p>
+                      <p className="help">
+                        Extras: USD {extras.toLocaleString()}
+                      </p>
                     ) : (
                       <p className="muted">Sin personalización</p>
                     )}
@@ -177,7 +208,9 @@ export default function Personalizar() {
                       type="button"
                       onClick={() => {
                         setSelectedId(it.id);
-                        opcionesRef.current?.scrollIntoView({ behavior: "smooth" });
+                        opcionesRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                        });
                       }}
                     >
                       Personalizar
@@ -189,8 +222,7 @@ export default function Personalizar() {
           </div>
         </section>
 
-        {/* Opciones del seleccionado */}
-        <section ref={opcionesRef} className="card" style={{ marginTop: 16 }}>
+        <section ref={opcionesRef} className="card">
           <h3>Opciones para: {seleccionado?.title}</h3>
 
           <form className="form-grid" onSubmit={(e) => e.preventDefault()}>
@@ -254,7 +286,7 @@ export default function Personalizar() {
               </select>
             </div>
 
-            <fieldset className="form-control" style={{ gridColumn: "1 / -1" }}>
+            <fieldset className="form-control">
               <legend>Accesorios</legend>
               <div className="stack two">
                 {Object.keys(PRECIOS.accesorios).map((a) => (
@@ -262,7 +294,9 @@ export default function Personalizar() {
                     <input
                       type="checkbox"
                       checked={current.accesorios?.includes(a) || false}
-                      onChange={(e) => handleToggleAccesorio(a, e.target.checked)}
+                      onChange={(e) =>
+                        handleToggleAccesorio(a, e.target.checked)
+                      }
                     />{" "}
                     {a} {precioTag(PRECIOS.accesorios[a])}
                   </label>
@@ -270,8 +304,12 @@ export default function Personalizar() {
               </div>
             </fieldset>
 
-            <div style={{ gridColumn: "1 / -1" }}>
-              <button className="btn is-primary" type="button" onClick={handleGuardar}>
+            <div>
+              <button
+                className="btn is-primary"
+                type="button"
+                onClick={handleGuardar}
+              >
                 Guardar configuración
               </button>
             </div>
@@ -279,12 +317,10 @@ export default function Personalizar() {
         </section>
       </div>
 
-      {/* DERECHA: panel resumen pegajoso */}
       <aside className="card cart-panel">
         <h3>Resumen</h3>
 
-        {/* Vehículo seleccionado */}
-        <div className="cart-item" style={{ marginTop: 8 }}>
+        <div className="cart-item">
           <div className="cart-item__info">
             <strong>{seleccionado?.title ?? "—"}</strong>
             <div className="muted">
@@ -292,12 +328,13 @@ export default function Personalizar() {
             </div>
           </div>
           <div className="cart-item__qty">
-            <span>USD {seleccionado ? seleccionado.price.toLocaleString() : 0}</span>
+            <span>
+              USD {seleccionado ? seleccionado.price.toLocaleString() : 0}
+            </span>
           </div>
         </div>
 
-        {/* Opciones elegidas */}
-        <div className="cart-items" style={{ marginTop: 8 }}>
+        <div className="cart-items">
           <div className="muted">Color: {current.color}</div>
           <div className="muted">Paquete: {current.paquete}</div>
           <div className="muted">Llantas: {current.llantas}</div>
@@ -305,7 +342,7 @@ export default function Personalizar() {
           {current.accesorios?.length ? (
             <div className="muted">
               Accesorios:
-              <ul style={{ margin: "6px 0 0 16px" }}>
+              <ul>
                 {current.accesorios.map((a) => (
                   <li key={a}>{a}</li>
                 ))}
@@ -316,7 +353,6 @@ export default function Personalizar() {
           )}
         </div>
 
-        {/* Totales */}
         <div className="cart-summary">
           <div className="cart-total-row">
             <span>Total vehículo</span>
@@ -327,36 +363,21 @@ export default function Personalizar() {
             <strong>USD {extrasTotal.toLocaleString()}</strong>
           </div>
           <div className="cart-total-row">
-            <span style={{ fontWeight: 700 }}>TOTAL A PAGAR</span>
-            <strong style={{ fontSize: 18 }}>
-              USD {(total + extrasTotal).toLocaleString()}
-            </strong>
+            <strong>TOTAL A PAGAR</strong>
+            <strong>USD {(total + extrasTotal).toLocaleString()}</strong>
           </div>
-          <NavLink to="/catalogo" className="btn">
-            PROCEDER AL PAGO
-          </NavLink>
+
+          {/* Abrir el carrito (drawer) */}
+          <button className="btn is-primary" onClick={() => setOpen(true)}>
+            Enviar solicitud
+          </button>
         </div>
       </aside>
     </main>
   );
 }
 
-/* ====== helpers ====== */
 function precioTag(n) {
   if (!n) return "";
   return `( +USD ${n.toLocaleString()} )`;
-}
-
-function calcularExtras(cfg) {
-  if (!cfg) return 0;
-  const base =
-    (PRECIOS.color[cfg.color] ?? 0) +
-    (PRECIOS.paquete[cfg.paquete] ?? 0) +
-    (PRECIOS.llantas[cfg.llantas] ?? 0) +
-    (PRECIOS.garantia[cfg.garantia] ?? 0);
-  const acc = (cfg.accesorios || []).reduce(
-    (sum, a) => sum + (PRECIOS.accesorios[a] ?? 0),
-    0
-  );
-  return base + acc;
 }

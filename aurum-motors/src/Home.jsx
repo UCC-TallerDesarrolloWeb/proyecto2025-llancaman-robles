@@ -1,3 +1,4 @@
+// Home.jsx
 import { useEffect, useState } from "react";
 
 const SLIDES = [
@@ -23,20 +24,52 @@ const SLIDES = [
 
 const Home = () => {
   const [idx, setIdx] = useState(0);
+  const [resultado, setResultado] = useState("");
 
   const go = (i) => setIdx((i + SLIDES.length) % SLIDES.length);
-  const next = () => go(idx + 1);
-  const prev = () => go(idx - 1);
+  const next = () => setIdx((prev) => (prev + 1) % SLIDES.length);
+  const prev = () =>
+    setIdx((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
 
   useEffect(() => {
-    const id = setInterval(next, 3000);
+    const id = setInterval(() => {
+      setIdx((prev) => (prev + 1) % SLIDES.length);
+    }, 3000);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idx]);
+  }, []);
+
+  const calcularCuota = () => {
+    const precio = Number(document.getElementById("precio")?.value);
+    const anticipo = Number(document.getElementById("anticipo")?.value);
+    const tasa = Number(document.getElementById("tasa")?.value); // TNA %
+    const meses = Number(document.getElementById("meses")?.value);
+
+    if (!(precio > 0) || !(meses > 0) || isNaN(tasa) || isNaN(anticipo)) {
+      setResultado("Completá todos los campos con valores válidos.");
+      return;
+    }
+
+    const financiado = Math.max(0, precio - anticipo);
+    const i = tasa / 100 / 12;
+    let cuota = 0;
+
+    if (financiado === 0) {
+      cuota = 0;
+    } else if (i === 0) {
+      cuota = financiado / meses;
+    } else {
+      cuota = (financiado * i) / (1 - Math.pow(1 + i, -meses));
+    }
+
+    setResultado(
+      `Cuota estimada: USD ${cuota.toFixed(
+        2
+      )} · Financiado: USD ${financiado.toFixed(2)}`
+    );
+  };
 
   return (
     <main>
-      {/* Slider */}
       <div className="container section">
         <section className="slider" aria-label="Galería de modelos destacados">
           <div className="slider__track">
@@ -93,7 +126,6 @@ const Home = () => {
         </section>
       </div>
 
-      {/* Quiénes somos */}
       <div className="container section">
         <section className="card" id="quienes-somos">
           <h3>¿Quiénes somos?</h3>
@@ -107,7 +139,6 @@ const Home = () => {
         </section>
       </div>
 
-      {/* Calculadora */}
       <div className="container section">
         <section className="card" aria-labelledby="calc-title">
           <h3 id="calc-title">Calculadora de financiación</h3>
@@ -144,7 +175,7 @@ const Home = () => {
             </div>
             <div className="form-control">
               <label htmlFor="meses">Meses</label>
-              <select id="meses" name="meses">
+              <select id="meses" name="meses" defaultValue="12">
                 <option value="12">12</option>
                 <option value="24">24</option>
                 <option value="36">36</option>
@@ -153,12 +184,14 @@ const Home = () => {
             </div>
           </div>
 
-          <p id="resultado" aria-live="polite"></p>
+          <p id="resultado" aria-live="polite">
+            {resultado}
+          </p>
           <button
             id="calc-btn"
             className="btn"
             type="button"
-            onClick={() => window.calcularCuota?.()}
+            onClick={calcularCuota}
           >
             Calcular cuota
           </button>

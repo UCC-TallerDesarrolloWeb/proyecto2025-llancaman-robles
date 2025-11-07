@@ -1,0 +1,273 @@
+/* ---------- Toolbar de catálogo ---------- */
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+
+  input[type="search"] {
+    flex: 1 1 420px;
+    min-width: 220px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid #20232b;
+    background: #0f1116;
+    color: #e6e6e6;
+    outline: none;
+
+    &:focus {
+      border-color: #cdb46c;
+    }
+  }
+
+  small {
+    margin-left: 6px;
+  }
+}
+
+// filtros + resultados
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 16px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// filtros de la izquierda
+.catalog-filters {
+  position: relative;
+  top: auto;
+  align-self: start;
+
+  @media (min-width: 993px) {
+    position: sticky;
+    top: 84px;
+  }
+}
+
+// resultados
+.catalog-list {
+  min-width: 0;
+}
+
+// grilla de tarjetas de vehiculos
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// tarjeta de vehiculo
+.product-card {
+  background: #0f1116;
+  border: 1px solid #20232b;
+  border-radius: 16px;
+  display: grid;
+  grid-template-rows: 180px auto;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  &.is-selected {
+    border-color: #cdb46c;
+  }
+
+  .product-media {
+    background: #0b0c10;
+    border-radius: 10%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .product-body {
+    padding: 12px;
+
+    .product-title {
+      font-size: 1rem;
+    }
+
+    .product-meta {
+      color: #a3a3a3;
+      font-size: 0.9rem;
+    }
+
+    .product-price {
+      display: inline-block;
+      margin: 6px 0 8px;
+    }
+
+    .btn {
+      margin-top: 2px;
+      width: 100%;
+    }
+  }
+}
+
+// modal vehiculo
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+
+  .modal-body {
+    width: min(920px, 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    background: #16181d;
+    border: 1px solid #20232b;
+    border-radius: 18px;
+    padding: 18px;
+    position: relative;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-media {
+      background: #0f1116;
+      border-radius: 12px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .modal-content {
+      .price {
+        display: inline-block;
+        margin: 6px 0 10px;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .meta {
+        color: #a3a3a3;
+      }
+    }
+
+    .modal-backdrop {
+      z-index: 50;
+    }
+    .modal {
+      z-index: 60;
+    }
+    .modal .modal-close {
+      z-index: 1;
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: 0;
+    color: #a3a3a3;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 2;
+  }
+}
+
+// personalizar layout
+.personalize-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+
+  .card + .card {
+    margin-top: 16px;
+  }
+
+  .product-card {
+    cursor: pointer;
+  }
+}
+
+// panel derecho (resumen)
+.cart-panel {
+  position: sticky;
+  top: 16px;
+  height: fit-content;
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    background: #0f1116;
+    border: 1px solid #20232b;
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .cart-summary {
+    margin-top: 12px;
+  }
+}
+
+.cart-items ul {
+  margin: 6px 0 0 16px;
+}
+
+// extras de filtros
+.filters .stack label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.filters input[type="number"]::-webkit-outer-spin-button,
+.filters input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.filters input[type="number"] {
+  appearance: textfield;
+}
+
+// accesibilidad
+[aria-live="polite"] {
+  outline: none;
+}
+
+@media (max-width: 992px) {
+  .catalog-layout {
+    display: block;
+  }
+
+  .catalog-filters,
+  .catalog-list {
+    position: static;
+    height: auto;
+  }
+}

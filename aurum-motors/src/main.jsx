@@ -1,15 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./styles/index.css";
 
-import { CartProvider } from "./components/CartContext.jsx";
-import Layout from "./components/Layout.jsx";
-import Home from "./Home.jsx";
-import Login from "./Login.jsx";
-
-import Catalogo from "./pages/Catalogo.jsx";
-import Personalizar from "./pages/Personalizar.jsx";
+import Layout from "@components/Layout.jsx";
+import Home from "@/Home.jsx";
+import Catalogo from "@pages/Catalogo.jsx";
+import Personalizar from "@pages/Personalizar.jsx";
+import Login from "@/Login.jsx";
+import "@styles/global.scss";
+import "@styles/index.scss";
+import "@styles/store.scss";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

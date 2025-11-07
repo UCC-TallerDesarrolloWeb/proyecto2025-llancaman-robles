@@ -1,55 +1,74 @@
+// cartApi.js
 const BASE_URL = "http://localhost:4000/cart";
 
+async function request(path = "", options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
+  if (!res.ok) {
+    const msg = await safeText(res);
+    throw new Error(msg || `HTTP ${res.status}`);
+  }
+  return res.status === 204 ? null : await safeJson(res);
+}
+
+async function safeJson(res) {
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function safeText(res) {
+  try {
+    return await res.text();
+  } catch {
+    return "";
+  }
+}
+
 export async function getCart() {
-  const res = await fetch(BASE_URL, { method: "GET" });
-  if (!res.ok) throw new Error("Error al obtener el carrito.");
-  return await res.json();
+  return await request("", { method: "GET" });
 }
 
 export async function addToCart(vehiculos) {
   const newItem = {
-    vehiculoId: vehiculos.vehiculo.id,
-    nombre: vehiculos.nombre,
-    unitPrice: vehiculos.precio,
+    vehiculoId: vehiculos?.vehiculo?.id ?? null,
+    nombre: vehiculos?.nombre ?? "",
+    unitPrice: Number(vehiculos?.precio ?? 0),
     qty: 1,
-    imagen: vehiculos.imagen,
+    imagen: vehiculos?.imagen ?? "",
   };
 
-  const res = await fetch(BASE_URL, {
+  return await request("", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newItem),
   });
-
-  if (!res.ok) throw new Error("Error al agregar al carrito.");
-  return await res.json();
 }
 
 export async function updateCartItem(id, patch) {
-  const res = await fetch(`${BASE_URL}/${id}`, {
+  return await request(`/${encodeURIComponent(id)}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(patch),
+    body: JSON.stringify(patch || {}),
   });
-  if (!res.ok) throw new Error("Error al actualizar item del carrito.");
-  return await res.json();
 }
 
 export async function deleteCartItem(id) {
-  const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Error al eliminar item del carrito.");
+  await request(`/${encodeURIComponent(id)}`, { method: "DELETE" });
+  return true;
 }
 
 export async function findCartItemByVehiculoId(vehiculoId) {
-  const res = await fetch(
-    `${BASE_URL}?vehiculoId=${encodeURIComponent(vehiculoId)}`
-  );
-  if (!res.ok) throw new Error("Error al buscar item por vehiculoId.");
-  const list = await res.json();
+  const list = await request(`?vehiculoId=${encodeURIComponent(vehiculoId)}`, {
+    method: "GET",
+  });
   return Array.isArray(list) && list.length ? list[0] : null;
 }
 
 export async function clearCart() {
   const current = await getCart();
-  await Promise.all((current || []).map((it) => deleteCartItem(it.id)));
+  if (!Array.isArray(current) || current.length === 0) return;
+  await Promise.all(current.map((it) => deleteCartItem(it.id)));
 }

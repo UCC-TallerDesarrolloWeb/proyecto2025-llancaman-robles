@@ -1,0 +1,646 @@
+// variables
+$bg: #0f0f12; // fondo principal
+$panel: #16181d; // paneles / cards
+$panel-2: #0f1116; // panel más oscuro
+$border: #20232b; // bordes
+$ink: #e6e6e6; // texto principal
+$muted: #a3a3a3; // texto secundario
+$gold: #cdb46c; // acento
+$gold-2: #b9962b; // acento hover
+$accent: #2a2e37; // botones neutros
+$shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+$radius: 16px;
+$space: 16px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1 0 auto;
+}
+
+
+body {
+  margin: 0;
+  background: $bg;
+  color: $ink;
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+h1 {
+  font-size: 1.9rem;
+}
+h2 {
+  font-size: 1.35rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+p {
+  margin: 8px 0;
+}
+
+.muted {
+  color: $muted;
+}
+.help {
+  color: $gold;
+}
+.lead {
+  font-size: 1.05rem;
+}
+
+// layout
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $space;
+}
+.section {
+  padding: 24px 0;
+}
+
+.card {
+  background: $panel;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: $space;
+  box-shadow: $shadow;
+}
+
+// utilidades
+.stack {
+  display: grid;
+  gap: 8px;
+}
+.stack.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 700px) {
+  .stack.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+.hidden {
+  display: none !important;
+}
+
+/* utilidades suaves para reemplazar style="" */
+.u-mt-8 {
+  margin-top: 8px;
+}
+.u-mt-12 {
+  margin-top: 12px;
+}
+.u-mt-16 {
+  margin-top: 16px;
+}
+.min-h-60vh {
+  min-height: 60vh;
+}
+
+// botones
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: $accent;
+  color: $ink;
+  cursor: pointer;
+  transition: 0.15s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &.is-primary {
+    background: transparent;
+    border-color: $gold;
+    color: $gold;
+
+    &:hover {
+      background: rgba($gold, 0.08);
+      border-color: $gold-2;
+      color: $gold-2;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+/* foco accesible, sobrio (no cambia estética general) */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.cart-button:focus-visible {
+  outline: 2px solid rgba($gold, 0.6);
+  outline-offset: 2px;
+}
+
+// formularios
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-control {
+  display: grid;
+  gap: 6px;
+
+  label {
+    color: $muted;
+    font-size: 0.9rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid $border;
+    background: $panel-2;
+    color: $ink;
+    outline: none;
+
+    &:focus {
+      border-color: $gold;
+    }
+  }
+}
+
+// header, nav y footer
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: $bg;
+  border-bottom: 1px solid $border;
+}
+.header-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// marca
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &__logo {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+  &__title {
+    font-size: 1.1rem;
+    color: $gold;
+  }
+}
+
+// boton de menu para mobile
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: $ink;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// navegacion
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  a {
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: $ink;
+
+    &.active {
+      color: $gold;
+      border-bottom: 2px solid $gold;
+      padding-bottom: 4px;
+    }
+  }
+}
+
+// carrito en el header
+.cart-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid $gold;
+  background: transparent;
+  color: $gold;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba($gold, 0.08);
+    border-color: $gold-2;
+    color: $gold-2;
+  }
+}
+.cart-icon {
+  line-height: 1;
+}
+.cart-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: $gold;
+  color: #000;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// nav responsive
+@media (max-width: 900px) {
+  .main-nav {
+    display: none;
+    position: absolute;
+    right: 16px;
+    top: 68px;
+    background: $panel;
+    border: 1px solid $border;
+    border-radius: 12px;
+    padding: 10px;
+    flex-direction: column;
+    gap: 8px;
+    width: min(280px, 90vw);
+
+    a,
+    .btn,
+    .cart-button {
+      width: 100%;
+      text-align: left;
+    }
+  }
+  .site-header.nav-open .main-nav {
+    display: flex;
+  }
+}
+
+// footer
+.site-footer {
+  margin-top: 24px;
+  border-top: 1px solid $border;
+  background: $panel-2;
+  color: $muted;
+
+  .grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+
+    @media (max-width: 700px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  a {
+    color: $ink;
+  }
+  .footer-right {
+    text-align: right;
+    @media (max-width: 700px) {
+      text-align: left;
+    }
+  }
+}
+
+// home slider
+.slider {
+  position: relative;
+  width: 100%;
+  height: clamp(220px, 38vw, 380px);
+  overflow: hidden;
+  border-radius: $radius;
+  border: 1px solid $border;
+  background: #0b0c10;
+}
+.slider__track {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+.slider__slide {
+  position: relative;
+  height: 100%;
+  display: none;
+  margin: 0;
+
+  &.is-active {
+    display: block;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  img[src*="MB CLASE C AMG2.jpeg"] {
+    object-position: center 80%;
+  }
+}
+
+.slider__caption {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  > h2 {
+    margin: 0 0 4px;
+    font-size: 1.2rem;
+    color: $gold;
+  }
+  > p {
+    margin: 0;
+    color: $ink;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .slider__caption {
+    max-width: 70%;
+    left: 8px;
+    right: 8px;
+    bottom: 10px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px);
+
+    h2 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.slider__controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6px;
+  pointer-events: none;
+
+  .ctrl {
+    pointer-events: auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.35);
+    color: $ink;
+    cursor: pointer;
+  }
+}
+.slider__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+
+  button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.15);
+    &.is-active {
+      background: $gold;
+      border-color: $gold;
+    }
+  }
+}
+
+// cart drawer
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+  &.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  height: 100%;
+  width: 420px;
+  background: $panel;
+  border-left: 1px solid $border;
+  transition: right 0.2s ease;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+
+  &.is-open {
+    right: 0;
+  }
+  @media (max-width: 520px) {
+    width: 100%;
+  }
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px $space;
+    border-bottom: 1px solid $border;
+    h2 {
+      font-size: 1.1rem;
+    }
+    .cart-close {
+      background: none;
+      border: 0;
+      color: $muted;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .cart-items {
+    padding: $space;
+    overflow: auto;
+    flex: 1 1 auto;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid $border;
+    border-radius: 12px;
+    background: $panel-2;
+    & + .cart-item {
+      margin-top: 10px;
+    }
+
+    &__info {
+      min-width: 0;
+    }
+    &__qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      button {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: $panel;
+        border: 1px solid $border;
+      }
+      span {
+        display: inline-block;
+        min-width: 18px;
+        text-align: center;
+      }
+    }
+    .cart-item__remove {
+      background: none;
+      border: 0;
+      color: #ff6b6b;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .cart-summary {
+    padding: $space;
+    border-top: 1px solid $border;
+    background: $panel-2;
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      color: $muted;
+      strong {
+        color: $ink;
+      }
+    }
+    .cart-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  body {
+    overflow-y: auto;
+  }
+
+  main {
+    min-height: auto;
+    padding-bottom: 80px;
+  }
+
+  .site-footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+}
