@@ -26,10 +26,12 @@ const Login = () => {
             <label htmlFor="usuario">Usuario</label>
             <input
               id="usuario"
+              name="username"
               type="text"
               placeholder="Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
+              autoComplete="username"
               required
             />
           </div>
@@ -38,15 +40,17 @@ const Login = () => {
             <label htmlFor="password">Contraseña</label>
             <input
               id="password"
+              name="current-password"
               type="password"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
             />
           </div>
 
-          <div className="form-control" style={{ gridColumn: "1 / -1" }}>
+        <div className="form-control" style={{ gridColumn: "1 / -1" }}>
             <button type="submit" className="btn is-primary">
               Ingresar
             </button>

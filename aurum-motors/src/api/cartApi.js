@@ -1,74 +1,56 @@
-// cartApi.js
-const BASE_URL = "http://localhost:4000/cart";
+// src/api/cartApi.js
+import dataLocal from "@data/db.json";
 
-async function request(path = "", options = {}) {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...options,
-  });
-  if (!res.ok) {
-    const msg = await safeText(res);
-    throw new Error(msg || `HTTP ${res.status}`);
-  }
-  return res.status === 204 ? null : await safeJson(res);
-}
-
-async function safeJson(res) {
-  try {
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-async function safeText(res) {
-  try {
-    return await res.text();
-  } catch {
-    return "";
-  }
-}
+const BASE_URL = "http://localhost:4000";
+const USE_API = import.meta.env.VITE_USE_API === "true";
 
 export async function getCart() {
-  return await request("", { method: "GET" });
+  if (!USE_API) {
+    return dataLocal.cart || [];
+  }
+  try {
+    const res = await fetch(`${BASE_URL}/cart`);
+    if (!res.ok) throw new Error("Error al obtener el carrito");
+    return await res.json();
+  } catch (e) {
+    console.warn("API no disponible, usando datos locales:", e?.message);
+    return dataLocal.cart || [];
+  }
 }
 
-export async function addToCart(vehiculos) {
-  const newItem = {
-    vehiculoId: vehiculos?.vehiculo?.id ?? null,
-    nombre: vehiculos?.nombre ?? "",
-    unitPrice: Number(vehiculos?.precio ?? 0),
-    qty: 1,
-    imagen: vehiculos?.imagen ?? "",
-  };
-
-  return await request("", {
-    method: "POST",
-    body: JSON.stringify(newItem),
-  });
-}
-
-export async function updateCartItem(id, patch) {
-  return await request(`/${encodeURIComponent(id)}`, {
-    method: "PATCH",
-    body: JSON.stringify(patch || {}),
-  });
-}
-
-export async function deleteCartItem(id) {
-  await request(`/${encodeURIComponent(id)}`, { method: "DELETE" });
-  return true;
-}
-
-export async function findCartItemByVehiculoId(vehiculoId) {
-  const list = await request(`?vehiculoId=${encodeURIComponent(vehiculoId)}`, {
-    method: "GET",
-  });
-  return Array.isArray(list) && list.length ? list[0] : null;
+export async function addToCart(item) {
+  if (!USE_API) {
+    return item;
+  }
+  try {
+    const res = await fetch(`${BASE_URL}/cart`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(item),
+    });
+    if (!res.ok) throw new Error("Error al agregar al carrito");
+    return await res.json();
+  } catch (e) {
+    console.warn("Error agregando al carrito:", e?.message);
+    return item;
+  }
 }
 
 export async function clearCart() {
-  const current = await getCart();
-  if (!Array.isArray(current) || current.length === 0) return;
-  await Promise.all(current.map((it) => deleteCartItem(it.id)));
+  if (!USE_API) {
+    console.log("Modo local: limpiando carrito");
+    return true;
+  }
+  try {
+    const cart = await getCart();
+    await Promise.all(
+      cart.map((item) =>
+        fetch(`${BASE_URL}/cart/${item.id}`, { method: "DELETE" })
+      )
+    );
+    return true;
+  } catch (e) {
+    console.error("Error al limpiar el carrito:", e);
+    return false;
+  }
 }

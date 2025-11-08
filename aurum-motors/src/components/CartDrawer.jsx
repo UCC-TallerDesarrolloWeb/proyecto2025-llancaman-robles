@@ -172,8 +172,11 @@ const CartDrawer = () => {
                 <button
                   className="btn is-primary"
                   disabled={!items.length}
-                  onClick={() => alert("Solicitud enviada. ¡Gracias!")}
-                >
+                  onClick={() => {
+                    setOpen(false);
+                    window.setTimeout(() => alert("Solicitud enviada. ¡Gracias!"), 0);
+                  }}
+                    >
                   Enviar solicitud
                 </button>
               </div>

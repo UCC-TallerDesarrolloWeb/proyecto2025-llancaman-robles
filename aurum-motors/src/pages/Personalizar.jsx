@@ -1,10 +1,12 @@
-// Personalizar.jsx
+// src/pages/Personalizar.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@components/CartContext";
 import { NavLink } from "react-router-dom";
+import dataLocal from "@data/db.json";
 
 const CUSTOM_STORAGE = "aurum_customizations";
 const SELECTED_ID = "aurum_selected_vehicle_id";
+const USE_API = import.meta.env.VITE_USE_API === "true"; // <- controla si llamar o no a json-server
 
 const PRECIOS = {
   color: {
@@ -75,18 +77,45 @@ export default function Personalizar() {
   }, [items]);
 
   const [vehiculosMap, setVehiculosMap] = useState({});
+  const fetchedOnce = useRef(false);
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/vehiculos");
-        if (!res.ok) return;
-        const data = await res.json();
-        const map = {};
-        data.forEach((v) => (map[v.id] = v));
-        setVehiculosMap(map);
-      } catch {}
+    if (fetchedOnce.current) return;
+    fetchedOnce.current = true;
+
+    const usarLocal = () => {
+      const map = {};
+      (dataLocal?.vehiculos || []).forEach((v) => (map[v.id] = v));
+      setVehiculosMap(map);
     };
-    load();
+
+    if (!USE_API) {
+      usarLocal();
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("http://localhost:4000/vehiculos", {
+          cache: "no-store",
+        });
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          const map = {};
+          data.forEach((v) => (map[v.id] = v));
+          setVehiculosMap(map);
+        } else if (!cancelled) {
+          usarLocal();
+        }
+      } catch {
+        if (!cancelled) usarLocal();
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const current = useMemo(
@@ -161,7 +190,9 @@ export default function Personalizar() {
         _extras: calcularExtras(current),
       };
       localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(all));
-      alert("¡Configuración guardada para este vehículo!");
+      window.setTimeout(() => {
+        alert("¡Configuración guardada para este vehículo!");
+      }, 0);
     } catch (e) {
       console.error("Error guardando configuración:", e);
     }
@@ -367,7 +398,6 @@ export default function Personalizar() {
             <strong>USD {(total + extrasTotal).toLocaleString()}</strong>
           </div>
 
-          {/* Abrir el carrito (drawer) */}
           <button className="btn is-primary" onClick={() => setOpen(true)}>
             Enviar solicitud
           </button>

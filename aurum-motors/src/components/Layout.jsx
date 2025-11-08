@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import { useCart } from "@components/CartContext";
 import CartDrawer from "@components/CartDrawer";
+import logo from "@/assets/logo.png";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const Layout = () => {
               onClick={closeNav}
             >
               <img
-                src="/logo.png"
+                src={logo}
                 alt="Logo de Aurum"
                 className="brand__logo"
               />
