@@ -1,6 +1,5 @@
 // Home.jsx
 import { useEffect, useState } from "react";
-import Logo from "@/assets/logo.png";
 
 const SLIDES = [
   {
@@ -45,12 +44,28 @@ const Home = () => {
     const tasa = Number(document.getElementById("tasa")?.value); // TNA %
     const meses = Number(document.getElementById("meses")?.value);
 
-    if (!(precio > 0) || !(meses > 0) || isNaN(tasa) || isNaN(anticipo)) {
-      setResultado("Completá todos los campos con valores válidos.");
+    // Validaciones básicas: números válidos y no-negativos
+    if (!Number.isFinite(precio) || precio <= 0) {
+      setResultado("Ingresá un precio válido y mayor a 0.");
+      return;
+    }
+    if (!Number.isFinite(anticipo) || anticipo < 0) {
+      setResultado("Ingresá un anticipo válido (0 o mayor).");
+      return;
+    }
+    if (!Number.isFinite(tasa) || tasa < 0) {
+      setResultado("Ingresá una tasa válida (0 o mayor).");
+      return;
+    }
+    if (!Number.isFinite(meses) || meses <= 0) {
+      setResultado("Seleccioná una cantidad de meses válida.");
       return;
     }
 
-    const financiado = Math.max(0, precio - anticipo);
+    // Asegurar que el anticipo no supere al precio
+    const anticipoSan = Math.min(anticipo, precio);
+    const financiado = Math.max(0, precio - anticipoSan);
+
     const i = tasa / 100 / 12;
     let cuota = 0;
 
@@ -152,6 +167,16 @@ const Home = () => {
                 type="number"
                 placeholder="Ej: 45000"
                 inputMode="numeric"
+                min="0"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  )
+                    e.preventDefault();
+                }}
               />
             </div>
             <div className="form-control">
@@ -162,6 +187,16 @@ const Home = () => {
                 type="number"
                 placeholder="Ej: 10000"
                 inputMode="numeric"
+                min="0"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  )
+                    e.preventDefault();
+                }}
               />
             </div>
             <div className="form-control">
@@ -172,6 +207,17 @@ const Home = () => {
                 type="number"
                 placeholder="Ej: 48"
                 inputMode="decimal"
+                min="0"
+                step="0.01"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  )
+                    e.preventDefault();
+                }}
               />
             </div>
             <div className="form-control">

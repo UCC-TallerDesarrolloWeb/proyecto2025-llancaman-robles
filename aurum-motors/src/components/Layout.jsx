@@ -54,11 +54,7 @@ const Layout = () => {
               aria-label="Ir a inicio"
               onClick={closeNav}
             >
-              <img
-                src={logo}
-                alt="Logo de Aurum"
-                className="brand__logo"
-              />
+              <img src={logo} alt="Logo de Aurum" className="brand__logo" />
             </NavLink>
             <h1 className="brand__title">Aurum Motors</h1>
           </div>
@@ -93,9 +89,11 @@ const Layout = () => {
               <span className="cart-icon" aria-hidden="true">
                 🛒
               </span>
-              <span className="cart-count" aria-live="polite">
-                {count}
-              </span>
+              {isLoggedIn && count > 0 && (
+                <span className="cart-count" aria-live="polite">
+                  {count}
+                </span>
+              )}
             </button>
 
             {isLoggedIn ? (

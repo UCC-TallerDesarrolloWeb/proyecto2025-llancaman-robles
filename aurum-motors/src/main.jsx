@@ -8,7 +8,6 @@ import Catalogo from "@pages/Catalogo.jsx";
 import Personalizar from "@pages/Personalizar.jsx";
 import Login from "@/Login.jsx";
 import { CartProvider } from "@components/CartContext.jsx";
-import Logo from "@/assets/logo.png";
 
 import "@styles/global.scss";
 import "@styles/index.scss";
@@ -16,8 +15,8 @@ import "@styles/store.scss";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CartProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <CartProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -26,7 +25,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="login" element={<Login />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </CartProvider>
+      </CartProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

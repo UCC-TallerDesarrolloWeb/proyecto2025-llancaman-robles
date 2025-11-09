@@ -148,39 +148,44 @@ const CartDrawer = () => {
               )}
             </div>
 
-            <div className="cart-summary">
-              <div className="cart-total-row">
-                <span>Total vehículos</span>
-                <strong>USD {total.toLocaleString()}</strong>
+            {items.length > 0 && (
+              <div className="cart-summary">
+                <div className="cart-total-row">
+                  <span>Total vehículos</span>
+                  <strong>USD {total.toLocaleString()}</strong>
+                </div>
+                <div className="cart-total-row">
+                  <span>Extras seleccionados</span>
+                  <strong>USD {extrasSum.toLocaleString()}</strong>
+                </div>
+                <div className="cart-total-row">
+                  <strong>TOTAL A PAGAR</strong>
+                  <strong>USD {grandTotal.toLocaleString()}</strong>
+                </div>
+                <div className="cart-actions">
+                  <button
+                    className="btn"
+                    onClick={clear}
+                    disabled={!items.length}
+                  >
+                    Limpiar selección
+                  </button>
+                  <button
+                    className="btn is-primary"
+                    disabled={!items.length}
+                    onClick={() => {
+                      setOpen(false);
+                      window.setTimeout(
+                        () => alert("Solicitud enviada. ¡Gracias!"),
+                        0
+                      );
+                    }}
+                  >
+                    Enviar solicitud
+                  </button>
+                </div>
               </div>
-              <div className="cart-total-row">
-                <span>Extras seleccionados</span>
-                <strong>USD {extrasSum.toLocaleString()}</strong>
-              </div>
-              <div className="cart-total-row">
-                <strong>TOTAL A PAGAR</strong>
-                <strong>USD {grandTotal.toLocaleString()}</strong>
-              </div>
-              <div className="cart-actions">
-                <button
-                  className="btn"
-                  onClick={clear}
-                  disabled={!items.length}
-                >
-                  Limpiar selección
-                </button>
-                <button
-                  className="btn is-primary"
-                  disabled={!items.length}
-                  onClick={() => {
-                    setOpen(false);
-                    window.setTimeout(() => alert("Solicitud enviada. ¡Gracias!"), 0);
-                  }}
-                    >
-                  Enviar solicitud
-                </button>
-              </div>
-            </div>
+            )}
           </>
         )}
       </aside>

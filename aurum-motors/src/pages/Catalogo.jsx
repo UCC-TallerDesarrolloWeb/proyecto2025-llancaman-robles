@@ -53,11 +53,22 @@ const Catalogo = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     if (type === "checkbox") {
       handleCheckbox(name, value, checked);
-    } else {
-      setFiltros((prev) => ({ ...prev, [name]: value }));
+      return;
     }
+
+    if (type === "number") {
+      const num = value === "" ? "" : Math.max(0, Number(value));
+      setFiltros((prev) => ({
+        ...prev,
+        [name]: num === "" ? "" : String(num),
+      }));
+      return;
+    }
+
+    setFiltros((prev) => ({ ...prev, [name]: value }));
   };
 
   const limpiarFiltros = () => setFiltros(FILTROS_INICIALES);
@@ -172,6 +183,10 @@ const Catalogo = () => {
                     placeholder="2018"
                     value={filtros.anioMin}
                     onChange={handleChange}
+                    min="0"
+                    onKeyDown={(e) => {
+                      if (e.key === "-") e.preventDefault();
+                    }}
                   />
                 </div>
                 <div className="form-control">
@@ -183,6 +198,10 @@ const Catalogo = () => {
                     placeholder="2025"
                     value={filtros.anioMax}
                     onChange={handleChange}
+                    min="0"
+                    onKeyDown={(e) => {
+                      if (e.key === "-") e.preventDefault();
+                    }}
                   />
                 </div>
               </div>
@@ -200,6 +219,10 @@ const Catalogo = () => {
                     placeholder="50000"
                     value={filtros.precioMin}
                     onChange={handleChange}
+                    min="0"
+                    onKeyDown={(e) => {
+                      if (e.key === "-") e.preventDefault();
+                    }}
                   />
                 </div>
                 <div className="form-control">
@@ -211,6 +234,10 @@ const Catalogo = () => {
                     placeholder="200000"
                     value={filtros.precioMax}
                     onChange={handleChange}
+                    min="0"
+                    onKeyDown={(e) => {
+                      if (e.key === "-") e.preventDefault();
+                    }}
                   />
                 </div>
               </div>

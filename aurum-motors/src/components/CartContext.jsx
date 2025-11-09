@@ -1,9 +1,17 @@
 // CartContext.jsx
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { addToCart } from "@api/cartApi.js";
 
 const CartContext = createContext(null);
-export const useCart = () => useContext(CartContext);
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useCart = () => {
+  const ctx = useContext(CartContext);
+  if (!ctx) {
+    throw new Error("useCart debe usarse dentro de <CartProvider>.");
+  }
+  return ctx;
+};
 
 const STORAGE_KEY = "aurum_cart";
 
@@ -42,16 +50,17 @@ export function CartProvider({ children }) {
     [items]
   );
 
-  const toggle = () => setOpen((v) => !v);
+  const toggle = useCallback(() => setOpen((v) => !v), []);
 
-  const updateQty = (id, delta) =>
+  const updateQty = useCallback((id, delta) =>
     setItems((prev) =>
       prev.map((p) =>
         p.id === id ? { ...p, qty: Math.max(1, (p.qty ?? 1) + delta) } : p
       )
-    );
+    )
+  , []);
 
-  const addItem = async (product) => {
+  const addItem = useCallback(async (product) => {
     const qty = product.qty ?? 1;
     const normalized = {
       id: product.id,
@@ -81,16 +90,17 @@ export function CartProvider({ children }) {
     } catch (e) {
       console.error("Error al agregar al carrito (API):", e);
     }
-  };
+  }, []);
 
-  const removeItem = (id) =>
-    setItems((prev) => prev.filter((p) => p.id !== id));
+  const removeItem = useCallback((id) =>
+    setItems((prev) => prev.filter((p) => p.id !== id))
+  , []);
 
-  const inc = (id) => updateQty(id, 1);
+  const inc = useCallback((id) => updateQty(id, 1), [updateQty]);
 
-  const dec = (id) => updateQty(id, -1);
+  const dec = useCallback((id) => updateQty(id, -1), [updateQty]);
 
-  const clear = () => setItems([]);
+  const clear = useCallback(() => setItems([]), []);
 
   const value = useMemo(
     () => ({
@@ -106,7 +116,7 @@ export function CartProvider({ children }) {
       count,
       total,
     }),
-    [open, items, count, total]
+    [open, items, count, total, toggle, addItem, removeItem, inc, dec, clear, setOpen]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

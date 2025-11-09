@@ -26,9 +26,19 @@ const ModalVehiculo = ({ vehiculo, onClose }) => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
+  // bloquear scroll al abrir (si hay vehiculo)
+  useEffect(() => {
+    if (!vehiculo) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [vehiculo]);
+
   if (!vehiculo) return null;
 
-  const { id, marca, modelo, precio, imagen, meta, title: t } = vehiculo;
+  const { id, marca, modelo, precio, title: t } = vehiculo;
   const title =
     (t || [marca, modelo].filter(Boolean).join(" ")).trim() || "Vehículo";
   const priceNumber = Number(precio ?? 0);
@@ -49,14 +59,6 @@ const ModalVehiculo = ({ vehiculo, onClose }) => {
     onClose?.();
     navigate("/personalizar");
   };
-
-  // bloquear scroll al abrir
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
 
   return (
     <>
