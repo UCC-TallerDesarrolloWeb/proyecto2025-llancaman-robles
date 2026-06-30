@@ -50,7 +50,7 @@ const Login = () => {
             />
           </div>
 
-        <div className="form-control" style={{ gridColumn: "1 / -1" }}>
+        <div className="form-control form-control--full">
             <button type="submit" className="btn is-primary">
               Ingresar
             </button>

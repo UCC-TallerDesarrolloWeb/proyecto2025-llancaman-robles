@@ -2,11 +2,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@components/CartContext";
 import { NavLink } from "react-router-dom";
-import dataLocal from "@data/db.json";
+import dataLocal from "@data/db.json"; 
 
-const CUSTOM_STORAGE = "aurum_customizations";
-const SELECTED_ID = "aurum_selected_vehicle_id";
-const USE_API = import.meta.env.VITE_USE_API === "true"; // <- controla si llamar o no a json-server
+const CUSTOM_STORAGE = "aurum_customizations"; 
+const SELECTED_ID = "aurum_selected_vehicle_id"; 
+const USE_API = import.meta.env.VITE_USE_API === "true"; 
 
 const PRECIOS = {
   color: {
@@ -47,19 +47,19 @@ export default function Personalizar() {
   const { items, total, setOpen } = useCart();
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  const [customs, setCustoms] = useState({});
+  const [customs, setCustoms] = useState({}); 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(CUSTOM_STORAGE);
-      if (raw) setCustoms(JSON.parse(raw));
+      if (raw) setCustoms(JSON.parse(raw)); 
     } catch (e) {
       console.error("Error leyendo personalizaciones:", e);
     }
   }, []);
 
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null); 
   useEffect(() => {
-    if (!items.length) return;
+    if (!items.length) return; 
     try {
       const rem = localStorage.getItem(SELECTED_ID);
       if (rem) {
@@ -69,38 +69,39 @@ export default function Personalizar() {
         if (found) setSelectedId(found.id);
         localStorage.removeItem(SELECTED_ID);
       } else {
-        setSelectedId((prev) => prev ?? items[0].id);
+        setSelectedId((prev) => prev ?? items[0].id); 
       }
     } catch {
       setSelectedId((prev) => prev ?? items[0].id);
     }
   }, [items]);
 
-  const [vehiculosMap, setVehiculosMap] = useState({});
+  const [vehiculosMap, setVehiculosMap] = useState({}); 
   const fetchedOnce = useRef(false);
 
-  useEffect(() => {
-    if (fetchedOnce.current) return;
-    fetchedOnce.current = true;
+  useEffect(() => { 
+    if (fetchedOnce.current) return; 
+    fetchedOnce.current = true; 
 
-    const usarLocal = () => {
+    const usarLocal = () => { 
       const map = {};
       (dataLocal?.vehiculos || []).forEach((v) => (map[v.id] = v));
-      setVehiculosMap(map);
+      setVehiculosMap(map); 
     };
 
-    if (!USE_API) {
+    if (!USE_API) { 
       usarLocal();
       return;
     }
 
-    let cancelled = false;
+    let cancelled = false; 
     (async () => {
       try {
+        
         const res = await fetch("http://localhost:4000/vehiculos", {
           cache: "no-store",
         });
-        if (!cancelled && res.ok) {
+        if (!cancelled && res.ok) { 
           const data = await res.json();
           const map = {};
           data.forEach((v) => (map[v.id] = v));
@@ -114,7 +115,7 @@ export default function Personalizar() {
     })();
 
     return () => {
-      cancelled = true;
+      cancelled = true; 
     };
   }, []);
 
@@ -130,6 +131,7 @@ export default function Personalizar() {
     [customs, selectedId]
   );
 
+  
   const setCurrent = (patch) => {
     if (!selectedId) return;
     setCustoms((prev) => {
@@ -147,7 +149,7 @@ export default function Personalizar() {
   const opcionesRef = useRef(null);
   const extrasTotal = useMemo(() => calcularExtras(current), [current]);
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn) { 
     return (
       <main className="container section min-h-60vh">
         <h1>Personalizar</h1>
@@ -161,7 +163,7 @@ export default function Personalizar() {
     );
   }
 
-  if (!items.length) {
+  if (!items.length) { 
     return (
       <main className="container section min-h-60vh">
         <h1>Personalizar</h1>
@@ -178,13 +180,13 @@ export default function Personalizar() {
   const handleToggleAccesorio = (nombre, checked) => {
     const set = new Set(current.accesorios || []);
     checked ? set.add(nombre) : set.delete(nombre);
-    setCurrent({ accesorios: [...set] });
+    setCurrent({ accesorios: [...set] }); 
   };
 
-  const handleGuardar = () => {
+  const handleGuardar = () => { 
     try {
       const raw = localStorage.getItem(CUSTOM_STORAGE);
-      const all = raw ? JSON.parse(raw) : {};
+      const all = raw ? JSON.parse(raw) : {}; 
       all[selectedId] = {
         ...(all[selectedId] ?? current),
         _extras: calcularExtras(current),

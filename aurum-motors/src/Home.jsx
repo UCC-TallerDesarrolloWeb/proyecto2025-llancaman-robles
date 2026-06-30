@@ -23,10 +23,10 @@ const SLIDES = [
 ];
 
 const Home = () => {
-  const [idx, setIdx] = useState(0);
-  const [resultado, setResultado] = useState("");
+  const [idx, setIdx] = useState(0); 
+  const [resultado, setResultado] = useState(""); 
 
-  const go = (i) => setIdx((i + SLIDES.length) % SLIDES.length);
+  const go = (i) => setIdx((i + SLIDES.length) % SLIDES.length); 
   const next = () => setIdx((prev) => (prev + 1) % SLIDES.length);
   const prev = () =>
     setIdx((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
@@ -39,12 +39,11 @@ const Home = () => {
   }, []);
 
   const calcularCuota = () => {
-    const precio = Number(document.getElementById("precio")?.value);
+    const precio = Number(document.getElementById("precio")?.value); 
     const anticipo = Number(document.getElementById("anticipo")?.value);
-    const tasa = Number(document.getElementById("tasa")?.value); // TNA %
+    const tasa = Number(document.getElementById("tasa")?.value); 
     const meses = Number(document.getElementById("meses")?.value);
 
-    // Validaciones básicas: números válidos y no-negativos
     if (!Number.isFinite(precio) || precio <= 0) {
       setResultado("Ingresá un precio válido y mayor a 0.");
       return;
@@ -62,23 +61,26 @@ const Home = () => {
       return;
     }
 
-    // Asegurar que el anticipo no supere al precio
-    const anticipoSan = Math.min(anticipo, precio);
-    const financiado = Math.max(0, precio - anticipoSan);
+    if (anticipo >= precio) {
+      setResultado("El anticipo no puede ser mayor o igual al precio del vehículo.");
+      return;
+    }
+
+    const financiado = precio - anticipo;
 
     const i = tasa / 100 / 12;
-    let cuota = 0;
+    let cuota = 0; 
 
     if (financiado === 0) {
       cuota = 0;
     } else if (i === 0) {
       cuota = financiado / meses;
     } else {
-      cuota = (financiado * i) / (1 - Math.pow(1 + i, -meses));
+      cuota = (financiado * i) / (1 - Math.pow(1 + i, -meses)); 
     }
 
     setResultado(
-      `Cuota estimada: USD ${cuota.toFixed(
+      `Cuota estimada: USD ${cuota.toFixed( 
         2
       )} · Financiado: USD ${financiado.toFixed(2)}`
     );
@@ -95,7 +97,7 @@ const Home = () => {
                 className={`slider__slide${i === idx ? " is-active" : ""}`}
                 aria-hidden={i === idx ? "false" : "true"}
               >
-                <img src={s.src} alt={s.alt} />
+                <img src={s.src} alt={s.alt} /> // s.src es la ruta de la imagen, s.alt es el texto alternativo para accesibilidad
                 <figcaption className="slider__caption">
                   <h2>{s.title}</h2>
                   <p>{s.desc}</p>

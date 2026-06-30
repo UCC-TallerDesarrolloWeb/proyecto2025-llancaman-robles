@@ -200,6 +200,10 @@ button:focus-visible,
   }
 }
 
+.form-control--full {
+  grid-column: 1 / -1;
+}
+
 .form-control {
   display: grid;
   gap: 6px;

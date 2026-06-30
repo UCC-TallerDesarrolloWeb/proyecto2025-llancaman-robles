@@ -9,7 +9,7 @@ const SELECTED_ID = "aurum_selected_vehicle_id";
 const DEFAULT_CUSTOM = {
   color: "Negro",
   paquete: "Base",
-  llantas: "18”",
+  llantas: "18",
   garantia: "Fábrica (2 años)",
   accesorios: [],
 };
@@ -26,7 +26,6 @@ const ModalVehiculo = ({ vehiculo, onClose }) => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  // bloquear scroll al abrir (si hay vehiculo)
   useEffect(() => {
     if (!vehiculo) return;
     const prev = document.body.style.overflow;

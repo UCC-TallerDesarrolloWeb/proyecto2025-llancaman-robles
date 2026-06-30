@@ -1,4 +1,5 @@
 // Catalogo.jsx
+// imports de react
 import { useEffect, useMemo, useState } from "react";
 import ModalVehiculo from "@components/ModalVehiculo";
 
@@ -13,45 +14,45 @@ const FILTROS_INICIALES = {
 };
 
 const Catalogo = () => {
-  const [vehiculos, setVehiculos] = useState([]);
-  const [filtros, setFiltros] = useState(FILTROS_INICIALES);
-  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
-
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const [vehiculos, setVehiculos] = useState([]); 
+  const [filtros, setFiltros] = useState(FILTROS_INICIALES); 
+  const [inputBuscar, setInputBuscar] = useState(""); 
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; 
 
   useEffect(() => {
-    const ac = new AbortController();
+    const ac = new AbortController(); 
     const fetchVehiculos = async () => {
       try {
         const res = await fetch("src/data/db.json", { signal: ac.signal });
-        const data = await res.json();
-        const list = Array.isArray(data?.vehiculos) ? data.vehiculos : [];
-        const normalizados = list.map((v) => ({
+        const data = await res.json(); 
+        const list = Array.isArray(data?.vehiculos) ? data.vehiculos : []; 
+        const normalizados = list.map((v) => ({ 
           ...v,
           _lcTipo: (v.tipo || "").toLowerCase(),
           _lcMarca: (v.marca || "").toLowerCase(),
           _lcNombre: `${v.marca || ""} ${v.modelo || ""}`.toLowerCase(),
         }));
-        setVehiculos(normalizados);
+        setVehiculos(normalizados); 
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Error al cargar los vehículos:", err);
         }
       }
     };
-    fetchVehiculos();
+    fetchVehiculos(); 
     return () => ac.abort();
-  }, []);
+  }, []); 
 
-  const handleCheckbox = (name, value, checked) => {
+  const handleCheckbox = (name, value, checked) => { 
     setFiltros((prev) => {
-      const set = new Set(prev[name]);
+      const set = new Set(prev[name]); 
       checked ? set.add(value) : set.delete(value);
-      return { ...prev, [name]: [...set] };
+      return { ...prev, [name]: [...set] }; 
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) => { 
     const { name, value, type, checked } = e.target;
 
     if (type === "checkbox") {
@@ -71,34 +72,41 @@ const Catalogo = () => {
     setFiltros((prev) => ({ ...prev, [name]: value }));
   };
 
-  const limpiarFiltros = () => setFiltros(FILTROS_INICIALES);
+  const handleBuscar = () => { 
+    setFiltros((prev) => ({ ...prev, buscar: inputBuscar }));
+  };
 
-  const resultados = useMemo(() => {
+  const limpiarFiltros = () => {
+    setFiltros(FILTROS_INICIALES);
+    setInputBuscar("");
+  };
+
+  const resultados = useMemo(() => { 
     const { tipo, marca, anioMin, anioMax, precioMin, precioMax, buscar } =
       filtros;
 
-    const hasTipos = tipo.length > 0;
-    const hasMarcas = marca.length > 0;
+    const hasTipos = tipo.length > 0; 
+    const hasMarcas = marca.length > 0; 
     const hasBuscar = Boolean(buscar?.trim());
-    const q = (buscar || "").toLowerCase();
+    const q = (buscar || "").toLowerCase(); 
 
-    const minY = anioMin ? Number(anioMin) : null;
+    const minY = anioMin ? Number(anioMin) : null; 
     const maxY = anioMax ? Number(anioMax) : null;
     const minP = precioMin ? Number(precioMin) : null;
     const maxP = precioMax ? Number(precioMax) : null;
 
     return vehiculos.filter((v) => {
-      const tipoOK = !hasTipos || tipo.includes(v._lcTipo);
+      const tipoOK = !hasTipos || tipo.includes(v._lcTipo); 
       const marcaOK = !hasMarcas || marca.includes(v._lcMarca);
       const anioOK =
-        (minY === null || v.anio >= minY) && (maxY === null || v.anio <= maxY);
+        (minY === null || v.anio >= minY) && (maxY === null || v.anio <= maxY); 
       const precioOK =
         (minP === null || v.precio >= minP) &&
         (maxP === null || v.precio <= maxP);
-      const buscarOK = !hasBuscar || v._lcNombre.includes(q);
-      return tipoOK && marcaOK && anioOK && precioOK && buscarOK;
+      const buscarOK = !hasBuscar || v._lcNombre.includes(q); 
+      return tipoOK && marcaOK && anioOK && precioOK && buscarOK; 
     });
-  }, [vehiculos, filtros]);
+  }, [vehiculos, filtros]); 
 
   return (
     <main className="container section">
@@ -108,10 +116,11 @@ const Catalogo = () => {
           name="buscar"
           type="search"
           placeholder="Buscar por marca o modelo..."
-          value={filtros.buscar}
-          onChange={handleChange}
+          value={inputBuscar}
+          onChange={(e) => setInputBuscar(e.target.value)} 
+          onKeyDown={(e) => { if (e.key === "Enter") handleBuscar(); }} 
         />
-        <button className="btn" type="button">
+        <button className="btn" type="button" onClick={handleBuscar}>
           Buscar
         </button>
         <small className="help">Ej.: "BMW", "Hilux", "A6"</small>
@@ -221,7 +230,7 @@ const Catalogo = () => {
                     onChange={handleChange}
                     min="0"
                     onKeyDown={(e) => {
-                      if (e.key === "-") e.preventDefault();
+                      if (e.key === "-") e.preventDefault(); 
                     }}
                   />
                 </div>
@@ -236,7 +245,7 @@ const Catalogo = () => {
                     onChange={handleChange}
                     min="0"
                     onKeyDown={(e) => {
-                      if (e.key === "-") e.preventDefault();
+                      if (e.key === "-") e.preventDefault(); 
                     }}
                   />
                 </div>
@@ -251,7 +260,7 @@ const Catalogo = () => {
           </form>
         </aside>
 
-        <section className="catalog-list" aria-live="polite">
+        <section className="catalog-list" aria-live="polite"> 
           <div className="catalog-grid">
             {resultados.length ? (
               resultados.map((v) => (

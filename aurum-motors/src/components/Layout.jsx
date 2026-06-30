@@ -14,7 +14,6 @@ const Layout = () => {
   const { toggle, count } = useCart();
 
   const toggleNav = () => setNavOpen((v) => !v);
-
   const closeNav = () => setNavOpen(false);
 
   const handleLogout = () => {
@@ -22,12 +21,10 @@ const Layout = () => {
     navigate("/");
   };
 
-  // cierra el menú al cambiar de ruta
   useEffect(() => {
     setNavOpen(false);
   }, [location.pathname]);
 
-  // cierra el menú al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
